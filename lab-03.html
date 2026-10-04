@@ -1,0 +1,75 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="EDU-200 Lab 3: Forward Traffic with Zscaler Client Connector"><title>Lab 3 | Forward Traffic with Zscaler Client Connector | EDU-200</title><link rel="stylesheet" href="assets/css/style.css"><script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head>
+<body data-page="lab-03"><a class="skip-link" href="#main">Skip to content</a><div id="course-nav"></div><header class="topbar">
+  <div class="topbar-left"><button class="icon-btn mobile-menu" data-menu-toggle aria-label="Open course navigation">☰</button><div class="breadcrumb"><a href="index.html">EDU-200</a> / <strong>Lab 3</strong> / Forward Traffic with Zscaler Client Connector</div></div>
+  <div class="topbar-actions"><div class="global-search"><input id="global-search-input" type="search" placeholder="Search labs or tasks…" aria-label="Search course"><div id="global-search-results" class="global-search-results"></div></div><button class="icon-btn" data-theme-toggle aria-label="Toggle dark or light mode"><span data-theme-icon>☾</span></button></div>
+</header>
+<main class="main" id="main"><div class="content">
+<section class="lab-hero"><div><div class="eyebrow">Lab 3</div><h1>Forward Traffic with Zscaler Client Connector</h1><p>Configure Z-Tunnel 2.0 forwarding and verify ZIA, ZPA, and ZDX on the client.</p><div class="lab-facts"><span class="fact"><strong>Time:</strong> ~20 minutes</span><span class="fact"><strong>Tasks:</strong> 2</span><span class="fact"><strong>Outcome:</strong> ZCC forwards and services are active</span></div></div></section>
+<div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Use your assigned tenant</div><p>Use the Student ID, Student FQDN, session password, and Skytap link from <strong>your own lab-access email</strong>. Values shown in examples and screenshots are not your live credentials.</p></div></div>
+
+<section class="section concept-primer" id="profiles-explainer">
+  <div class="section-head stacked">
+    <div class="eyebrow">Technical explainer</div>
+    <h2>App Profile vs. Forwarding Profile</h2>
+    <p>These two Client Connector objects work together but solve different problems. The <strong>App Profile</strong> determines which endpoint settings a user or device receives; it then references a <strong>Forwarding Profile</strong>, which determines how traffic is handled in different network contexts.</p>
+  </div>
+
+  <div class="grid grid-2 concept-grid">
+    <article class="card pad">
+      <div class="concept-kicker">Endpoint configuration</div>
+      <h3>App Profile</h3>
+      <p>Think of this as the policy package for the Client Connector application on the endpoint.</p>
+      <ul class="clean-list">
+        <li><strong>Assignment:</strong> OS-specific rule, user/group scope, and rule precedence.</li>
+        <li><strong>Traffic steering:</strong> PAC behavior plus application or IP bypasses.</li>
+        <li><strong>Endpoint controls:</strong> certificate installation and protection settings such as logout, disable, or uninstall controls.</li>
+        <li><strong>Operations:</strong> logging and other app-level settings.</li>
+        <li><strong>Important:</strong> the App Profile selects the Forwarding Profile the endpoint should use.</li>
+      </ul>
+    </article>
+
+    <article class="card pad">
+      <div class="concept-kicker accent">Traffic handling</div>
+      <h3>Forwarding Profile</h3>
+      <p>This object answers a different question: <strong>how should traffic flow on this network?</strong></p>
+      <ul class="clean-list">
+        <li>Defines behavior for network contexts such as <strong>On-Trusted</strong>, <strong>Off-Trusted</strong>, <strong>VPN-Trusted</strong>, and <strong>Split VPN-Trusted</strong>.</li>
+        <li>Controls the ZIA forwarding mode and whether ZPA traffic is tunneled or not.</li>
+        <li>For ZIA, the selected tunnel version determines the transport used to send traffic to Zscaler.</li>
+        <li><strong>Z-Tunnel 1.0:</strong> CONNECT-based forwarding for proxy-aware/web traffic depending on mode.</li>
+        <li><strong>Z-Tunnel 2.0:</strong> packet tunnel over DTLS/TLS and supports all ports and protocols, subject to policy and bypasses.</li>
+      </ul>
+    </article>
+  </div>
+
+  <figure class="figure concept-figure">
+    <button data-lightbox data-caption="App Profile and Forwarding Profile relationship. The App Profile controls endpoint settings and references the Forwarding Profile; the Forwarding Profile controls network-dependent ZIA/ZPA traffic handling.">
+      <img src="assets/images/shared/app-forwarding-profiles-explainer.svg" alt="Diagram explaining the relationship between Zscaler Client Connector App Profiles and Forwarding Profiles">
+    </button>
+    <figcaption>App Profile = endpoint settings + a reference to the Forwarding Profile. Z-Tunnel versions shown here apply to ZIA forwarding, not ZPA.</figcaption>
+  </figure>
+
+  <div class="callout info">
+    <div class="callout-symbol">i</div>
+    <div>
+      <div class="callout-title">How this maps to Lab 3</div>
+      <p>You will first create the <strong>HandsOnLab Forwarding Profile</strong> and set ZIA to <strong>Z-Tunnel 2.0</strong>. You will then create the Windows <strong>App Profile</strong> and point it to that Forwarding Profile. This distinction matters later because the firewall exercises require non-web traffic to reach ZIA for inspection.</p>
+    </div>
+  </div>
+</section>
+
+<section class="task" id="task-3-1">
+  <article class="card task-shell">
+    <header class="task-head"><div class="task-num">3.1</div><div><h2>Configure Traffic Forwarding Options</h2><p>Create a forwarding profile and Windows app profile so endpoint traffic is tunneled to the Zero Trust Exchange.</p></div><label class="task-complete"><input type="checkbox" data-task-check="3.1"> Mark complete</label></header>
+    <div class="task-body"><div class="nav-path-card"><div class="eyebrow">Current Experience Center navigation</div><div class="route new"><span>Infrastructure</span><i>›</i><span>Connectors</span><i>›</i><span>Client</span></div></div><ol class="steps"><li><div class="step-content">Sign in at <span class="inline-value"><span class="value">https://console.zscaler.com/</span><button class="copy-btn" data-copy="https://console.zscaler.com/">Copy</button></span> with the student administrator account.</div></li><li><div class="step-content">Open <div class="route new"><span>Infrastructure</span><i>›</i><span>Connectors</span><i>›</i><span>Client</span><i>›</i><span>Forwarding Profile for Platforms</span></div> Select <strong>Add Forwarding Profile</strong> and name it <strong>HandsOnLab</strong>.</div></li><li><div class="step-content">For Windows Driver Selection choose <strong>Packet Filter Based</strong>. Under ZIA set On-Trusted Network to <strong>Tunnel</strong> with <strong>Z-Tunnel 2.0</strong>; set VPN Trusted and Off-Trusted to <strong>Same as On-Trusted Network</strong>.</div></li><li><div class="step-content">Under ZPA, set On-Trusted Network to <strong>Tunnel</strong> and use <strong>Same as On-Trusted Network</strong> for VPN Trusted and Off-Trusted. Save.</div></li><li><div class="step-content">Open <div class="route new"><span>Infrastructure</span><i>›</i><span>Connectors</span><i>›</i><span>Client</span><i>›</i><span>Platform Settings</span><i>›</i><span>Windows</span></div> Under App Profile select <strong>Add Windows Policy</strong> and configure:<table class="credentials settings-table"><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td>Name</td><td>HandsOnLab</td></tr><tr><td>Rule Order</td><td>1</td></tr><tr><td>Status</td><td>Enable</td></tr><tr><td>Forwarding Profile</td><td>HandsOnLab</td></tr><tr><td>Install Zscaler SSL Certificate</td><td>On</td></tr><tr><td>User Groups</td><td>All</td></tr></tbody></table> Click <strong>Add</strong>.</div></li></ol><div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep in mind</div><p>Z-Tunnel 2.0 is required here because the later firewall exercises depend on all ports/protocols being forwarded to ZIA.</p></div></div><div class="reference-gallery"><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 39. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-209.jpg" alt="Reference screenshot for task 3.1 from source guide page 39"></button><figcaption>Reference screenshot · source PDF p.39. <span>Legacy navigation may be visible.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 44. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-224.jpg" alt="Reference screenshot for task 3.1 from source guide page 44"></button><figcaption>Reference screenshot · source PDF p.44. <span>Legacy navigation may be visible.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>The HandsOnLab forwarding profile and Windows app profile are enabled and assigned to all users.</p></div></div></div>
+  </article>
+</section><section class="task" id="task-3-2">
+  <article class="card task-shell">
+    <header class="task-head"><div class="task-num">3.2</div><div><h2>Sign In to Zscaler Client Connector and Verify Protection</h2><p>Sign in to ZCC and verify that the expected services and policy are active.</p></div><label class="task-complete"><input type="checkbox" data-task-check="3.2"> Mark complete</label></header>
+    <div class="task-body"><ol class="steps"><li><div class="step-content">On <strong>Corp: Client PC</strong>, open Zscaler Client Connector from the system tray and sign in as <span class="value">student@&lt;Student FQDN&gt;</span> with the password set in Lab 1.</div></li><li><div class="step-content">On <strong>Private Access</strong>, verify Service Status = ON and that Client/Broker IP information is populated.</div></li><li><div class="step-content">On <strong>Internet Security</strong>, verify Service Status = ON, the username is correct, and byte counters increase as pages load.</div></li><li><div class="step-content">On <strong>Digital Experience</strong>, verify Service Status = ON and Authentication Status = Authenticated.</div></li><li><div class="step-content">On <strong>More</strong>, verify the applied App Policy is <strong>HandsOnLab</strong>. If not, click <strong>Update Policy</strong> and recheck.</div></li><li><div class="step-content">Browse to <span class="inline-value"><span class="value">https://ip.zscaler.com</span><button class="copy-btn" data-copy="https://ip.zscaler.com">Copy</button></span> and confirm traffic is being serviced by a nearby Zscaler Service Edge.</div></li></ol><div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep in mind</div><p>If ZPA or ZDX is missing, check the student user under Administration → Identity → Users → Entitlements.</p></div></div><div class="reference-gallery"><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 45. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-227.jpg" alt="Reference screenshot for task 3.2 from source guide page 45"></button><figcaption>Reference screenshot · source PDF p.45. <span>Legacy navigation may be visible.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 50. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-244.jpg" alt="Reference screenshot for task 3.2 from source guide page 50"></button><figcaption>Reference screenshot · source PDF p.50. <span>Legacy navigation may be visible.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>ZIA, ZPA, and ZDX are active in ZCC; the HandsOnLab policy is applied; internet traffic is forwarded through Zscaler.</p></div></div></div>
+  </article>
+</section>
+<div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Lab 3 complete</div><p>ZCC forwards and services are active</p></div></div>
+<div class="page-nav"><a href="lab-02.html"><small>Previous</small><strong>← Lab 2</strong></a><a class="next" href="lab-04.html"><small>Next</small><strong>Lab 4 →</strong></a></div>
+<footer class="footer"><span>Unofficial EDU-200 web edition · Author: Rupak Dey · Lab 3</span><span>Source screenshots are retained as visual references; follow current written navigation.</span></footer>
+</div></main><a class="floating-logo" href="#main" aria-label="Back to top"><img src="assets/images/zscaler-logo.svg" alt="Zscaler"></a><dialog class="modal" id="image-modal"><img alt="Expanded lab screenshot"><div class="modal-bar"><span data-modal-caption></span><button class="modal-close" data-modal-close>Close</button></div></dialog><script src="assets/js/site.js"></script></body></html>

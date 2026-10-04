@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1320" viewBox="0 0 1800 1320" role="img" aria-labelledby="title desc"><title id="title">ZPA: private application access and key terms</title><desc id="desc">Zscaler Private Access gives authorized users access to specific private applications. Client Connector and App Connectors establish outbound connections to ZPA service edges, which broker allowed sessions. A separate configuration diagram links segment groups, application segments, server groups, App Connector groups and connectors. A provisioning key enrolls a connector into its group. Client Connector uses synthetic IPs for intercepted application DNS requests, while the connector reaches the real backend.</desc><defs>
+<marker id="data" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#51e2b0"/></marker>
+<marker id="config" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#67b5ff"/></marker>
+<marker id="setup" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#c3a5ff"/></marker>
+</defs><rect width="1800" height="1320" fill="#07182e"/><g font-family="Arial, Helvetica, sans-serif">
+<text x="60" y="48" font-size="18" fill="#51e2b0" font-weight="700" text-anchor="start">ZSCALER PRIVATE ACCESS  /  LEARNER QUICK GUIDE</text>
+<text x="60" y="103" font-size="40" fill="#f5f8ff" font-weight="700" text-anchor="start">ZPA connects a user to an allowed private application</text>
+<text x="60" y="145" font-size="23" fill="#b2c4d9" font-weight="400" text-anchor="start">Identity and access policy govern each connection. The user does not receive general routed access to the private network.</text>
+<text x="60" y="205" font-size="21" fill="#51e2b0" font-weight="700" text-anchor="start">01  HOW ACCESS WORKS</text>
+<rect x="570" y="230" width="420" height="354" rx="18" fill="#14243e" stroke="#426289" stroke-width="1.5"/>
+<text x="590" y="260" font-size="19" fill="#67b5ff" font-weight="700" text-anchor="start">ZPA CLOUD</text>
+<rect x="590" y="279" width="380" height="59" rx="10" fill="#1d3552" stroke="#426289" stroke-width="1.5"/>
+<text x="780" y="303" font-size="21" fill="#f5f8ff" font-weight="700" text-anchor="middle">Central Authority / control plane</text>
+<text x="780" y="326" font-size="18" fill="#b2c4d9" font-weight="400" text-anchor="middle">Distributes configuration and policy</text>
+<rect x="1130" y="230" width="610" height="354" rx="18" fill="#0e302f" stroke="#2b7164" stroke-width="1.5"/>
+<text x="1150" y="260" font-size="19" fill="#51e2b0" font-weight="700" text-anchor="start">YOUR DATA CENTER / CLOUD</text>
+<text x="1150" y="292" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">App Connectors can reach the private backend.</text>
+<rect x="60" y="391" width="350" height="153" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="78" y="425" font-size="24" fill="#f5f8ff" font-weight="700" text-anchor="start">User + Client Connector</text>
+<text x="78" y="459" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Requests intranet.safemarch.com</text>
+<text x="78" y="486" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Authenticated user / device</text>
+<text x="78" y="513" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Application traffic is intercepted</text>
+<rect x="590" y="391" width="380" height="153" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="608" y="425" font-size="24" fill="#f5f8ff" font-weight="700" text-anchor="start">Service Edge = broker</text>
+<text x="608" y="459" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Enforces the access policy</text>
+<text x="608" y="486" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Joins authorized connections</text>
+<text x="608" y="513" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Carries per-app microtunnels</text>
+<rect x="1150" y="391" width="250" height="153" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="1168" y="425" font-size="24" fill="#f5f8ff" font-weight="700" text-anchor="start">App Connector</text>
+<text x="1168" y="459" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Reaches the backend</text>
+<text x="1168" y="486" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Resolves private DNS</text>
+<text x="1168" y="513" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">No inbound listener</text>
+<rect x="1480" y="391" width="240" height="153" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="1498" y="425" font-size="24" fill="#f5f8ff" font-weight="700" text-anchor="start">Private application</text>
+<text x="1498" y="459" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">intranet.safemarch.com</text>
+<text x="1498" y="486" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Real IP: 10.0.0.2</text>
+<text x="1498" y="513" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">HTTPS / TCP 443</text>
+<path d="M410 468 H590" fill="none" stroke="#51e2b0" stroke-width="3" stroke-linejoin="round" marker-end="url(#data)"/>
+<text x="500" y="453" font-size="18" fill="#51e2b0" font-weight="700" text-anchor="middle">App request</text>
+<path d="M970 468 H1150" fill="none" stroke="#51e2b0" stroke-width="3" stroke-linejoin="round" marker-end="url(#data)"/>
+<text x="1060" y="453" font-size="18" fill="#51e2b0" font-weight="700" text-anchor="middle">If allowed</text>
+<path d="M1400 468 H1480" fill="none" stroke="#51e2b0" stroke-width="3" stroke-linejoin="round" marker-end="url(#data)"/>
+<path d="M235 391 V364 H665 V391" fill="none" stroke="#c3a5ff" stroke-width="3" stroke-linejoin="round" stroke-dasharray="7 6" marker-end="url(#setup)"/>
+<text x="380" y="350" font-size="18" fill="#c3a5ff" font-weight="400" text-anchor="middle">Client initiates outbound TLS</text>
+<path d="M1275 391 V364 H890 V391" fill="none" stroke="#c3a5ff" stroke-width="3" stroke-linejoin="round" stroke-dasharray="7 6" marker-end="url(#setup)"/>
+<text x="1120" y="350" font-size="18" fill="#c3a5ff" font-weight="400" text-anchor="middle">Connector initiates outbound TLS</text>
+<text x="60" y="600" font-size="18" fill="#51e2b0" font-weight="400" text-anchor="start">Green = logical request flow; responses use the established connections.</text>
+<rect x="60" y="611" width="1680" height="123" rx="14" fill="#172b43" stroke="#29425e" stroke-width="1.5"/>
+<text x="82" y="644" font-size="19" fill="#67b5ff" font-weight="700" text-anchor="start">02  WHY THE CLIENT DOES NOT NEED THE REAL SERVER IP</text>
+<text x="82" y="680" font-size="22" fill="#f5f8ff" font-weight="700" text-anchor="start">Client-side DNS</text>
+<text x="82" y="710" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Client Connector returns a synthetic IP.</text>
+<path d="M510 693 H620" fill="none" stroke="#67b5ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#config)"/>
+<text x="655" y="680" font-size="22" fill="#f5f8ff" font-weight="700" text-anchor="start">ZPA application mapping</text>
+<text x="655" y="710" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Connects the request to the permitted app.</text>
+<path d="M1100 693 H1210" fill="none" stroke="#67b5ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#config)"/>
+<text x="1240" y="680" font-size="22" fill="#f5f8ff" font-weight="700" text-anchor="start">App Connector-side DNS</text>
+<text x="1240" y="710" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Resolves and reaches the real backend.</text>
+<text x="60" y="784" font-size="21" fill="#67b5ff" font-weight="700" text-anchor="start">03  HOW THE CONFIGURATION OBJECTS FIT TOGETHER</text>
+<text x="60" y="814" font-size="19" fill="#b2c4d9" font-weight="400" text-anchor="start">These are relationships between objects, not packet hops.</text>
+<rect x="60" y="859" width="275" height="152" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="78" y="893" font-size="24" fill="#67b5ff" font-weight="700" text-anchor="start">Segment group</text>
+<text x="78" y="927" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Groups app segments</text>
+<text x="78" y="954" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">for policy targeting</text>
+<text x="78" y="981" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Example: Finance apps</text>
+<rect x="410" y="859" width="300" height="152" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="428" y="893" font-size="24" fill="#67b5ff" font-weight="700" text-anchor="start">Application segment</text>
+<text x="428" y="927" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Defines app destinations</text>
+<text x="428" y="954" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">FQDN / IP + TCP/UDP ports</text>
+<text x="428" y="981" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Example: intranet + TCP 443</text>
+<rect x="785" y="859" width="275" height="152" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="803" y="893" font-size="24" fill="#67b5ff" font-weight="700" text-anchor="start">Server group</text>
+<text x="803" y="927" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Groups backend servers</text>
+<text x="803" y="954" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Discovered or defined</text>
+<text x="803" y="981" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Maps app reachability</text>
+<rect x="1135" y="859" width="290" height="152" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="1153" y="893" font-size="24" fill="#67b5ff" font-weight="700" text-anchor="start">App Connector group</text>
+<text x="1153" y="927" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Pool of App Connectors</text>
+<text x="1153" y="954" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">with shared app reachability</text>
+<text x="1153" y="981" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Example: DC-Connectors</text>
+<rect x="1500" y="859" width="240" height="152" rx="14" fill="#10253f" stroke="#29425e" stroke-width="1.5"/>
+<text x="1518" y="893" font-size="24" fill="#67b5ff" font-weight="700" text-anchor="start">App Connectors</text>
+<text x="1518" y="927" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Deployed instances</text>
+<text x="1518" y="954" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Example: AC-01, AC-02</text>
+<text x="1518" y="981" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Provide app connectivity</text>
+<path d="M335 934 H410" fill="none" stroke="#67b5ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#config)"/>
+<text x="372.5" y="847" font-size="17" fill="#67b5ff" font-weight="700" text-anchor="middle">contains</text>
+<path d="M710 934 H785" fill="none" stroke="#67b5ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#config)"/>
+<text x="747.5" y="847" font-size="17" fill="#67b5ff" font-weight="700" text-anchor="middle">uses</text>
+<path d="M1060 934 H1135" fill="none" stroke="#67b5ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#config)"/>
+<text x="1097.5" y="847" font-size="17" fill="#67b5ff" font-weight="700" text-anchor="middle">selects</text>
+<path d="M1425 934 H1500" fill="none" stroke="#67b5ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#config)"/>
+<text x="1462.5" y="847" font-size="17" fill="#67b5ff" font-weight="700" text-anchor="middle">contains</text>
+<rect x="60" y="1050" width="930" height="117" rx="14" fill="#172b43" stroke="#29425e" stroke-width="1.5"/>
+<text x="82" y="1084" font-size="24" fill="#f5f8ff" font-weight="700" text-anchor="start">Access policy</text>
+<text x="82" y="1116" font-size="21" fill="#b2c4d9" font-weight="400" text-anchor="start">Who may access what: user / group, device posture and app criteria.</text>
+<text x="82" y="1146" font-size="21" fill="#b2c4d9" font-weight="400" text-anchor="start">Can target an application segment or a segment group.</text>
+<rect x="1135" y="1085" width="605" height="105" rx="14" fill="#2b2340" stroke="#6c568e" stroke-width="1.5"/>
+<text x="1157" y="1118" font-size="24" fill="#c3a5ff" font-weight="700" text-anchor="start">Provisioning key</text>
+<text x="1157" y="1149" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">Enrollment credential: joins a new connector to your</text>
+<text x="1157" y="1176" font-size="20" fill="#b2c4d9" font-weight="400" text-anchor="start">tenant and App Connector group. Not an access policy.</text>
+<path d="M1280 1085 V1011" fill="none" stroke="#c3a5ff" stroke-width="3" stroke-linejoin="round" stroke-dasharray="7 6" marker-end="url(#setup)"/>
+<text x="1298" y="1052" font-size="18" fill="#c3a5ff" font-weight="400" text-anchor="start">enrolls into</text>
+<path d="M60 1220 H1740" stroke="#29425e"/>
+<text x="60" y="1252" font-size="19" fill="#b2c4d9" font-weight="400" text-anchor="start">Scope: standard Client Connector access via a ZPA Public Service Edge. A Private Service Edge can provide the broker role on premises.</text>
+<text x="60" y="1283" font-size="18" fill="#b2c4d9" font-weight="400" text-anchor="start">Synthetic-IP view shown for hostname-based access; it abstracts backend addressing rather than providing blanket IP secrecy. Examples are illustrative.</text>
+</g></svg>

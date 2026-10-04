@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="EDU-200 ZPA concepts: private application access, App Connectors, application segments, server groups, segment groups, access policy, synthetic IPs and provisioning keys"><title>ZPA Concepts | EDU-200</title><link rel="stylesheet" href="assets/css/style.css"><script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head>
+<body data-page="zpa-explainer"><a class="skip-link" href="#main">Skip to content</a><div id="course-nav"></div><header class="topbar">
+  <div class="topbar-left"><button class="icon-btn mobile-menu" data-menu-toggle aria-label="Open course navigation">☰</button><div class="breadcrumb"><a href="index.html">EDU-200</a> / <strong>ZPA Foundation</strong> / Private Access Concepts</div></div>
+  <div class="topbar-actions"><div class="global-search"><input id="global-search-input" type="search" placeholder="Search labs or tasks…" aria-label="Search course"><div id="global-search-results" class="global-search-results"></div></div><button class="icon-btn" data-theme-toggle aria-label="Toggle dark or light mode"><span data-theme-icon>☾</span></button></div>
+</header>
+<main class="main" id="main"><div class="content">
+<section class="lab-hero concept-hero"><div><div class="eyebrow">ZPA foundation · before Labs 9–11</div><h1>How Zscaler Private Access fits together</h1><p>This explainer is intentionally broader than Lab 9. Use it as the conceptual foundation for provisioning infrastructure in Lab 9, publishing applications and access policy in Lab 10, and troubleshooting the same access chain in Lab 11.</p><div class="lab-facts"><span class="fact"><strong>Scope:</strong> Labs 9–11</span><span class="fact"><strong>Focus:</strong> access flow + configuration objects</span><span class="fact"><strong>Goal:</strong> understand the objects before configuring them</span></div></div></section>
+
+<section class="section concept-primer">
+  <div class="section-head stacked">
+    <div class="eyebrow">Core idea</div>
+    <h2>ZPA connects an authorized user to an allowed private application</h2>
+    <p>ZPA provides application-specific access rather than general routed access to the private network. Identity and access policy govern each connection, while the user-side Client Connector and customer-side App Connector establish outbound connections to the ZPA service.</p>
+  </div>
+
+  <div class="grid grid-3 concept-grid">
+    <article class="card pad"><div class="concept-kicker">1 · User side</div><h3>Client Connector</h3><p>Intercepts a request for the private application from an authenticated user/device and establishes the user-side connection to the ZPA service.</p></article>
+    <article class="card pad"><div class="concept-kicker accent">2 · ZPA cloud</div><h3>Service Edge / broker</h3><p>Enforces the access policy and joins the authorized user-side and connector-side connections for the permitted application.</p></article>
+    <article class="card pad"><div class="concept-kicker">3 · Application side</div><h3>App Connector</h3><p>Initiates its own outbound connection to ZPA, resolves private DNS, and reaches the permitted backend application. It does not require an inbound listener.</p></article>
+  </div>
+
+  <figure class="figure concept-figure zpa-concept-figure">
+    <button data-lightbox data-caption="ZPA private application access and key configuration objects. The diagram shows the logical request flow, synthetic-IP concept, and how segment groups, application segments, server groups, App Connector groups, App Connectors, access policy and provisioning keys relate.">
+      <img src="assets/images/shared/zpa-private-access-explainer.svg" alt="ZPA explainer diagram showing private application access flow, synthetic IP behavior, and configuration object relationships">
+    </button>
+    <figcaption>ZPA logical access flow and configuration-object relationships. The connections shown are application-specific; the user is not placed onto the private network as a generally routed endpoint.</figcaption>
+  </figure>
+</section>
+
+<section class="section">
+  <div class="section-head stacked">
+    <div class="eyebrow">DNS and addressing</div>
+    <h2>Why the endpoint does not need the real backend IP</h2>
+    <p>For hostname-based access, Client Connector can present a synthetic IP on the client side. ZPA maps that intercepted request to the permitted application, while the App Connector resolves and reaches the real private backend from the application side.</p>
+  </div>
+  <div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Synthetic IP is an abstraction</div><p>The synthetic-IP view separates the endpoint from the backend addressing used inside the private environment. The App Connector still needs working reachability and DNS resolution to the real application.</p></div></div>
+</section>
+
+<section class="section">
+  <div class="section-head stacked">
+    <div class="eyebrow">Configuration model</div>
+    <h2>How the main ZPA objects relate</h2>
+    <p>These relationships describe configuration dependencies—not packet hops. Keeping the objects distinct makes Labs 9–11 much easier to follow.</p>
+  </div>
+  <div class="object-map">
+    <article class="card pad"><div class="concept-kicker">Segment group</div><h3>Groups application segments</h3><p>Provides a policy-targeting container for related applications.</p></article>
+    <div class="object-arrow">→</div>
+    <article class="card pad"><div class="concept-kicker">Application segment</div><h3>Defines the application destination</h3><p>FQDN/IP plus TCP/UDP ports. This is the application the user is trying to reach.</p></article>
+    <div class="object-arrow">→</div>
+    <article class="card pad"><div class="concept-kicker">Server group</div><h3>Maps backend reachability</h3><p>Groups backend servers and associates the application with the connector-side reachability.</p></article>
+    <div class="object-arrow">→</div>
+    <article class="card pad"><div class="concept-kicker">App Connector group</div><h3>Selects a connector pool</h3><p>Groups App Connectors that share application reachability.</p></article>
+    <div class="object-arrow">→</div>
+    <article class="card pad"><div class="concept-kicker">App Connectors</div><h3>Provide application connectivity</h3><p>Deployed connector instances that establish outbound connectivity and reach the backend.</p></article>
+  </div>
+  <div class="grid grid-2 concept-grid">
+    <article class="card pad"><div class="concept-kicker accent">Access policy</div><h3>Who may access what?</h3><p>Evaluates the user/group, device posture and application criteria. A policy can target an application segment or segment group.</p></article>
+    <article class="card pad"><div class="concept-kicker purple">Provisioning key</div><h3>Enrollment credential</h3><p>Used when enrolling a new App Connector into the tenant and its App Connector group. It is an enrollment mechanism—not an application access policy.</p></article>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head stacked">
+    <div class="eyebrow">Use this model in the labs</div>
+    <h2>What each ZPA lab is really doing</h2>
+  </div>
+  <div class="grid grid-3 concept-grid">
+    <article class="card pad"><div class="concept-kicker">Lab 9</div><h3>Build the connector side</h3><p>Create the App Connector group and provisioning key, then enroll and activate the App Connector so ZPA has a path toward the private environment.</p><p><a class="text-link" href="lab-09.html">Go to Lab 9 →</a></p></article>
+    <article class="card pad"><div class="concept-kicker">Lab 10</div><h3>Publish the application</h3><p>Define the application segment and related groups, then create access policy so the intended user can reach the private application.</p><p><a class="text-link" href="lab-10.html">Go to Lab 10 →</a></p></article>
+    <article class="card pad"><div class="concept-kicker">Lab 11</div><h3>Troubleshoot the same chain</h3><p>When access fails, validate the application definition, policy decision, connector health/reachability and backend path instead of treating ZPA as a single opaque tunnel.</p><p><a class="text-link" href="lab-11.html">Go to Lab 11 →</a></p></article>
+  </div>
+</section>
+
+<div class="page-nav"><a href="lab-08.html"><small>Previous</small><strong>← Lab 8</strong></a><a class="next" href="lab-09.html"><small>Next</small><strong>Lab 9 →</strong></a></div>
+<footer class="footer"><span>Unofficial EDU-200 web edition · Author: Rupak Dey · ZPA foundation</span><span>Conceptual explainer for Labs 9–11.</span></footer>
+</div></main><a class="floating-logo" href="#main" aria-label="Back to top"><img src="assets/images/zscaler-logo.svg" alt="Zscaler"></a><dialog class="modal" id="image-modal"><img alt="Expanded diagram"><div class="modal-bar"><span data-modal-caption></span><button class="modal-close" data-modal-close>Close</button></div></dialog><script src="assets/js/site.js"></script></body></html>

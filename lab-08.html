@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="EDU-200 Lab 8: Enforce Policy with Unified DLP across Multi-Channel"><title>Lab 8 | Enforce Policy with Unified DLP across Multi-Channel | EDU-200</title><link rel="stylesheet" href="assets/css/style.css"><script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head>
+<body data-page="lab-08"><a class="skip-link" href="#main">Skip to content</a><div id="course-nav"></div><header class="topbar">
+  <div class="topbar-left"><button class="icon-btn mobile-menu" data-menu-toggle aria-label="Open course navigation">☰</button><div class="breadcrumb"><a href="index.html">EDU-200</a> / <strong>Lab 8</strong> / Enforce Policy with Unified DLP across Multi-Channel</div></div>
+  <div class="topbar-actions"><div class="global-search"><input id="global-search-input" type="search" placeholder="Search labs or tasks…" aria-label="Search course"><div id="global-search-results" class="global-search-results"></div></div><button class="icon-btn" data-theme-toggle aria-label="Toggle dark or light mode"><span data-theme-icon>☾</span></button></div>
+</header>
+<main class="main" id="main"><div class="content">
+<section class="lab-hero"><div><div class="eyebrow">Lab 8</div><h1>Enforce Policy with Unified DLP across Multi-Channel</h1><p>Create a DLP engine and rule using the Credit Cards dictionary, then test enforcement.</p><div class="lab-facts"><span class="fact"><strong>Time:</strong> ~15 minutes</span><span class="fact"><strong>Tasks:</strong> 1</span><span class="fact"><strong>Outcome:</strong> Sensitive data upload blocked</span></div></div></section>
+<div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Use your assigned tenant</div><p>Use the Student ID, Student FQDN, session password, and Skytap link from <strong>your own lab-access email</strong>. Values shown in examples and screenshots are not your live credentials.</p></div></div>
+
+<section class="section concept-primer compact-concept" id="dlp-explainer">
+  <div class="section-head stacked">
+    <div class="eyebrow">Technical concept</div>
+    <h2>DLP: Dictionary → Engine → Policy</h2>
+    <p>Think of Zscaler DLP as three layers: a <strong>dictionary detects sensitive content</strong>, an <strong>engine combines detection logic</strong>, and a <strong>DLP policy decides when and what action to take</strong>.</p>
+  </div>
+
+  <div class="dlp-pipeline" role="img" aria-label="Sensitive data flows through a DLP dictionary, DLP engine, DLP policy and enforcement action">
+    <div class="pipeline-node data-node"><span class="pipeline-label">Content</span><strong>File / text / upload</strong></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node"><span class="pipeline-label">Detect</span><strong>Dictionary</strong><small>What sensitive data looks like</small></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node"><span class="pipeline-label">Combine</span><strong>DLP Engine</strong><small>One or more dictionaries + logic</small></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node"><span class="pipeline-label">Decide</span><strong>DLP Policy</strong><small>Who / where / channel / action</small></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node result-node"><span class="pipeline-label">Enforce</span><strong>Allow / Block / Notify</strong></div>
+  </div>
+
+  <div class="grid grid-3 concept-grid compact-cards">
+    <article class="card pad">
+      <div class="concept-kicker">DLP dictionaries</div>
+      <h3>Detection building blocks</h3>
+      <p><strong>Predefined</strong> dictionaries cover common data types such as credit-card or government-ID patterns. <strong>Custom</strong> dictionaries can use Patterns &amp; Phrases, Exact Data Match (EDM), Indexed Document Match (IDM), or information-protection labels.</p>
+    </article>
+    <article class="card pad">
+      <div class="concept-kicker accent">DLP engines</div>
+      <h3>Collections of dictionaries</h3>
+      <p>An engine references one or more dictionaries and can combine them with logic and thresholds. Policies reference the <strong>engine</strong>, not the individual dictionary.</p>
+    </article>
+    <article class="card pad">
+      <div class="concept-kicker purple">DLP policies</div>
+      <h3>Context + enforcement</h3>
+      <p>The policy applies the engine to selected traffic/users/apps and determines the response—such as blocking the transfer and showing an end-user notification.</p>
+    </article>
+  </div>
+
+  <div class="callout info compact-callout">
+    <div class="callout-symbol">i</div>
+    <div><div class="callout-title">How this maps to Lab 8</div>
+    <p>The lab uses the predefined <strong>Credit Cards</strong> dictionary inside a custom <strong>Sensitive Data</strong> engine. The DLP rule then references that engine and blocks the test upload when the match threshold is met.</p></div>
+  </div>
+</section>
+
+<section class="task" id="task-8-1">
+  <article class="card task-shell">
+    <header class="task-head"><div class="task-num">8.1</div><div><h2>Protect PII Information for Data in Motion</h2><p>Build a simple DLP policy around the predefined Credit Cards dictionary and prove that it blocks a test upload.</p></div><label class="task-complete"><input type="checkbox" data-task-check="8.1"> Mark complete</label></header>
+    <div class="task-body"><div class="nav-path-card"><div class="eyebrow">Current Experience Center navigation</div><div class="route new"><span>Data Security</span></div><p class="micro-note">Fastest option: use <strong>Search menu</strong> and search for <strong>Dictionaries and Engines / Data Loss Prevention</strong>.</p></div><ol class="steps"><li><div class="step-content">First confirm <strong>SSL Inspect All</strong> is Enabled under <div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div>. DLP needs visibility into encrypted web traffic.</div></li><li><div class="step-content">Open <strong>Data Security</strong> and use Search menu for <strong>Dictionaries and Engines</strong>. Review the predefined <strong>Credit Cards</strong> dictionary, then switch to the <strong>DLP Engines</strong> tab.</div></li><li><div class="step-content">Create a DLP engine:<table class="credentials settings-table"><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td>Name</td><td>Sensitive Data</td></tr><tr><td>Expression</td><td>All</td></tr><tr><td>Predefined Dictionary</td><td>Credit Cards</td></tr><tr><td>Violation Threshold</td><td>1</td></tr><tr><td>Description</td><td>Credit Card Number and Sensitive Data Violation</td></tr></tbody></table> Save and activate.</div></li><li><div class="step-content">In <strong>Data Security</strong>, use Search menu for <strong>Data Loss Prevention</strong> and add a DLP rule.</div></li><li><div class="step-content">Configure:<table class="credentials settings-table"><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td>Rule Order</td><td>1</td></tr><tr><td>Severity</td><td>High</td></tr><tr><td>Rule Name</td><td>Data Violation Rule</td></tr><tr><td>Rule Status</td><td>Enabled</td></tr><tr><td>Content Matching</td><td>DLP Engine</td></tr><tr><td>DLP Engine</td><td>Sensitive Data</td></tr><tr><td>Data Traffic</td><td>Block</td></tr><tr><td>End User Notification</td><td>Show</td></tr></tbody></table> Leave other criteria at default; save and activate.</div></li><li><div class="step-content">On Corp: Client PC confirm ZCC <strong>Internet Security</strong> is enabled. Browse to <span class="inline-value"><span class="value">https://dlptoolbox.com/</span><button class="copy-btn" data-copy="https://dlptoolbox.com/">Copy</button></span> → <strong>File Audit</strong>, upload <strong>Desktop → DLP Test Files → Sensitive Data.txt</strong>, and verify the upload is blocked.</div></li></ol><div class="reference-gallery"><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 103. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-422.jpg" alt="Reference screenshot for task 8.1 from source guide page 103"></button><figcaption>Reference screenshot · source PDF p.103. <span>Legacy navigation may be visible.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 110. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-446.jpg" alt="Reference screenshot for task 8.1 from source guide page 110"></button><figcaption>Reference screenshot · source PDF p.110. <span>Legacy navigation may be visible.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>The test file is blocked by Data Violation Rule and an end-user block notification appears.</p></div></div></div>
+  </article>
+</section>
+<div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Lab 8 complete</div><p>Sensitive data upload blocked</p></div></div>
+<div class="page-nav"><a href="lab-07.html"><small>Previous</small><strong>← Lab 7</strong></a><a class="next" href="zpa-explainer.html"><small>Next</small><strong>ZPA Concepts →</strong></a></div>
+<footer class="footer"><span>Unofficial EDU-200 web edition · Author: Rupak Dey · Lab 8</span><span>Source screenshots are retained as visual references; follow current written navigation.</span></footer>
+</div></main><a class="floating-logo" href="#main" aria-label="Back to top"><img src="assets/images/zscaler-logo.svg" alt="Zscaler"></a><dialog class="modal" id="image-modal"><img alt="Expanded lab screenshot"><div class="modal-bar"><span data-modal-caption></span><button class="modal-close" data-modal-close>Close</button></div></dialog><script src="assets/js/site.js"></script></body></html>

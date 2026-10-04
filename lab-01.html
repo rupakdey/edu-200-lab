@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="EDU-200 Lab 1: connect to the virtual lab environment.">
+  <title>Lab 1 | Connect to the Virtual Lab Environment | EDU-200</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body data-page="lab-01">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="course-nav"></div>
+<header class="topbar">
+  <div class="topbar-left"><button class="icon-btn mobile-menu" data-menu-toggle aria-label="Open course navigation">☰</button><div class="breadcrumb"><a href="index.html">EDU-200</a> / <strong>Lab 1</strong> / Virtual Lab Access</div></div>
+  <div class="topbar-actions"><div class="global-search"><input id="global-search-input" type="search" placeholder="Search labs or tasks…" aria-label="Search course"><div id="global-search-results" class="global-search-results"></div></div><button class="icon-btn" data-theme-toggle aria-label="Toggle dark or light mode"><span data-theme-icon>☾</span></button></div>
+</header>
+
+<main class="main" id="main">
+<div class="content">
+  <section class="lab-hero">
+    <div>
+      <div class="eyebrow">Lab 1</div>
+      <h1>Connect to the Virtual Lab Environment</h1>
+      <p>Verify the Skytap pod, clipboard, and Zscaler Admin Console access.</p>
+      <div class="lab-facts"><span class="fact"><strong>Time:</strong> ~10 minutes</span><span class="fact"><strong>Tasks:</strong> 3</span><span class="fact"><strong>Outcome:</strong> Lab + console access verified</span></div>
+    </div>
+  </section>
+
+  <div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Use your own session values</div><p>Each learner has a unique tenant and Skytap link. In the sample access email, Student ID <span class="value">zs000578</span> maps to <span class="value">student@zs000578.labtenant.com</span>. Replace all examples with the values from <strong>your</strong> Lab Access Details.</p></div></div>
+
+  <section class="task" id="task-1-1">
+    <article class="card task-shell">
+      <header class="task-head"><div class="task-num">1.1</div><div><h2>Verify Lab Access</h2><p>Start the pod and confirm the required VMs are running.</p></div><label class="task-complete"><input type="checkbox" data-task-check="1.1"> Mark complete</label></header>
+      <div class="task-body">
+        <ol class="steps">
+          <li><div class="step-content"><strong>Open your unique Skytap Portal URL</strong> from the Lab Access Details email. The link is valid for the duration of your session.</div></li>
+          <li><div class="step-content"><strong>Select all VMs</strong> and click <strong>Play</strong> if needed.</div></li>
+          <li><div class="step-content"><strong>Wait until all three show Running.</strong> Startup is staged and may take a few minutes.</div></li>
+        </ol>
+        <figure class="figure compact"><button data-lightbox data-caption="Skytap pod with the Corp App Connector, Corp Client PC, and Corp Win Svr 2016 VMs running."><img src="assets/images/lab01/skytap-vms.png" alt="Skytap pod showing three virtual machines in the running state"></button><figcaption>All three lab VMs should show <strong>Running</strong>.</figcaption></figure>
+        <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p><strong>Corp: App Connector</strong>, <strong>Corp: Client PC</strong>, and <strong>Corp: Win Svr 2016</strong> are running.</p></div></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="task" id="task-1-2">
+    <article class="card task-shell">
+      <header class="task-head"><div class="task-num">1.2</div><div><h2>Use the Lab Clipboard</h2><p>Copy text from your computer into the Windows VM.</p></div><label class="task-complete"><input type="checkbox" data-task-check="1.2"> Mark complete</label></header>
+      <div class="task-body">
+        <ol class="steps">
+          <li><div class="step-content"><strong>Click Clipboard</strong> in the Skytap toolbar.</div></li>
+          <li><div class="step-content">Paste your text into <span class="value">Copy/paste</span>.</div></li>
+          <li><div class="step-content">In Windows, use <span class="value">Ctrl+V</span> or right-click → <strong>Paste</strong>.</div></li>
+        </ol>
+        <figure class="figure compact"><button data-lightbox data-caption="Skytap VM Clipboard. Paste content from your local system into the Copy/paste field, then paste inside the Windows VM."><img src="assets/images/lab01/skytap-clipboard.png" alt="Skytap VM Clipboard dialog with Copy paste field"></button><figcaption>Skytap VM Clipboard.</figcaption></figure>
+        <div class="callout warning"><div class="callout-symbol">⌘</div><div><div class="callout-title">Using a Mac?</div><p>Inside the Windows VM use <strong>Ctrl+V</strong>, not <strong>Cmd+V</strong>.</p></div></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="task" id="task-1-3">
+    <article class="card task-shell">
+      <header class="task-head"><div class="task-num">1.3</div><div><h2>Sign In to the Zscaler Admin Console</h2><p>Sign in to the client and verify admin-console access.</p></div><label class="task-complete"><input type="checkbox" data-task-check="1.3"> Mark complete</label></header>
+      <div class="task-body">
+        <ol class="steps">
+          <li><div class="step-content">Open <strong>Corp: Client PC</strong>.</div></li>
+          <li><div class="step-content">From the Skytap toolbar: <strong>Ctrl-Alt-Del</strong> → <strong>Credentials</strong> → <strong>Insert Credentials</strong> for <span class="value">student</span>.</div></li>
+        </ol>
+        <figure class="figure compact"><button data-lightbox data-caption="Corp Client PC Windows sign-in using the Skytap credential insertion control."><img src="assets/images/lab01/windows-login.png" alt="Windows student login screen with Skytap Insert Credentials control highlighted"></button><figcaption>Windows sign-in using the Skytap credential helper.</figcaption></figure>
+        <ol class="steps" start="3" style="counter-reset:step 2">
+          <li><div class="step-content">Open the <strong>Zscaler Admin Console</strong>.<div style="margin-top:7px"><span class="inline-value"><span class="value">https://console.zscaler.com/</span><button class="copy-btn" data-copy="https://console.zscaler.com/">Copy</button></span></div></div></li>
+          <li><div class="step-content">Sign in with your student admin account.<ul class="substeps"><li>Username: <span class="inline-value"><span class="value">student@&lt;Student FQDN&gt;</span><button class="copy-btn" data-copy="student@<Student FQDN>">Copy</button></span></li><li>Password: use the <strong>session password</strong> from your Lab Access Details email. Although the email template may call it a one-time password, it remains valid for the session unless you are prompted to change it.</li></ul></div></li>
+          <li><div class="step-content">If the portal prompts for a password change, complete it and use the new password for the remainder of the session.</div></li>
+        </ol>
+        <div class="grid grid-2" style="align-items:start">
+          <div class="callout success" style="margin:0"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>The Zscaler Admin Console / Experience Center loads successfully.</p></div></div>
+          <figure class="figure" style="margin:0"><button data-lightbox data-caption="Source guide confirmation that the password reset completed successfully."><img src="assets/images/lab01/password-change-success.png" alt="Zscaler password reset success screen"></button><figcaption>Password reset confirmation.</figcaption></figure>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Lab 1 complete</div><p>Pod, clipboard, and Zscaler console access are verified.</p></div></div>
+
+  <div class="page-nav"><a href="index.html#contents"><small>Previous</small><strong>← Course contents</strong></a><a class="next" href="lab-02.html"><small>Next</small><strong>Lab 2 — Access Entitlements →</strong></a></div>
+  <footer class="footer"><span>Unofficial EDU-200 web edition · Author: Rupak Dey · Lab 1</span><span>Progress and theme settings are saved locally in your browser.</span></footer>
+</div>
+</main>
+
+<a class="floating-logo" href="#main" aria-label="Back to top"><img src="assets/images/zscaler-logo.svg" alt="Zscaler"></a>
+<dialog class="modal" id="image-modal"><img alt="Expanded lab screenshot"><div class="modal-bar"><span data-modal-caption></span><button class="modal-close" data-modal-close>Close</button></div></dialog>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

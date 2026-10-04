@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Unofficial modern web edition of the Zscaler for Users - Administrator (EDU-200) hands-on lab guide, authored by Rupak Dey.">
+  <title>EDU-200 | Administrator Hands-on Lab Guide</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body data-page="home">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="course-nav"></div>
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn mobile-menu" data-menu-toggle aria-label="Open course navigation">☰</button>
+    <div class="breadcrumb"><strong>EDU-200</strong> / Web Lab Guide</div>
+  </div>
+  <div class="topbar-actions">
+    <div class="global-search"><input id="global-search-input" type="search" placeholder="Search labs or tasks…" aria-label="Search course"><div id="global-search-results" class="global-search-results"></div></div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle dark or light mode"><span data-theme-icon>☾</span></button>
+  </div>
+</header>
+
+<main class="main" id="main">
+<div class="content">
+  <section class="hero" id="overview">
+    <div class="eyebrow">Zscaler for Users - Administrator · Unofficial Web Edition</div>
+    <h1>EDU-200 Hands-on Lab Guide</h1>
+    <p>A streamlined, web-friendly adaptation of the EDU-200 lab experience with shorter instructions, current Experience Center navigation, and faster access to the task you are working on.</p>
+    <div class="author-line">Web edition by <strong>Rupak Dey</strong></div>
+    <div class="hero-meta"><span>16 labs</span><span>Current Experience Center navigation</span><span>Persistent chapter navigation</span><span>Light + dark mode</span></div>
+  </section>
+
+  <div class="callout warning unofficial-note"><div class="callout-symbol">!</div><div><div class="callout-title">Unofficial learning aid</div><p>This is an independent, simplified web adaptation created to make the hands-on labs easier to follow. It is <strong>not an official Zscaler lab guide</strong>. If the live tenant, instructor guidance, or current product UI differs from this site, follow the live environment.</p></div></div>
+
+  <section class="section">
+    <div class="section-head"><div><div class="eyebrow">Course outcome</div><h2>What you will practice</h2></div><p>Concise objectives replace the long scenario narrative in the source guide.</p></div>
+    <div class="grid grid-3">
+      <article class="card feature-card"><div class="feature-icon">01</div><h3>Connect</h3><p>Connect users and devices to the Zscaler Zero Trust Exchange and verify traffic forwarding.</p></article>
+      <article class="card feature-card"><div class="feature-icon">02</div><h3>Control</h3><p>Configure access and security controls for internet traffic and private applications.</p></article>
+      <article class="card feature-card"><div class="feature-icon">03</div><h3>Validate</h3><p>Use Zscaler administration and analytics interfaces to confirm policy behavior and investigate experience issues.</p></article>
+    </div>
+  </section>
+
+  <section class="section" id="navigation-guide">
+    <div class="section-head stacked"><div class="eyebrow">Experience Center navigation</div><h2>Use the new navigation throughout this web guide</h2><p>The menu structure is changing; the policy and resource configuration itself is not.</p></div>
+    <div class="card pad">
+      <div class="callout info" style="margin-top:0"><div class="callout-symbol">i</div><div><div class="callout-title">Navigation transition</div><p>The Experience Center currently allows users to switch between <strong>Original</strong> and <strong>New</strong> navigation from <strong>Account Settings</strong>. The original navigation option is scheduled to be removed after <strong>1:00 AM UTC on October 29, 2026</strong>. This web guide therefore uses the <strong>New</strong> navigation paths.</p></div></div>
+      <div class="grid grid-2 media-grid">
+        <figure class="figure" style="margin:0">
+          <button data-lightbox data-caption="New Experience Center navigation. Internet Access opens a service-specific menu with Dashboard, Policy, Resources, Tools, Settings, and Partner Integrations."><img src="assets/images/shared/new-navigation.png" alt="Experience Center showing the new Internet Access navigation"></button>
+          <figcaption>New Experience Center navigation used by this guide.</figcaption>
+        </figure>
+        <figure class="figure" style="margin:0">
+          <button data-lightbox data-caption="Account Settings includes the New Navigation Experience selector. Original and New can be selected until the original option is retired."><img src="assets/images/shared/account-settings-navigation.png" alt="Account Settings showing Original and New navigation options"></button>
+          <figcaption>Until retirement, switch navigation under <strong>Account Settings → New Navigation Experience</strong>.</figcaption>
+        </figure>
+      </div>
+      <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">What changes — and what does not</div><p><strong>Only the menu/navigation structure changes.</strong> The actual firewall, SSL/TLS, DNS, URL filtering, resource, and other policy configuration remains the same in both navigation modes.</p></div></div>
+      <div class="grid grid-2 route-grid">
+        <div class="route-example">
+          <strong>Firewall Filtering</strong>
+          <div class="route old" aria-label="Old path"><span>Policies</span><i>›</i><span>Access Control</span><i>›</i><span>Firewall</span><i>›</i><span>Firewall Filtering Policy</span></div>
+          <div class="route new" aria-label="Current path"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>Firewall Control</span></div>
+        </div>
+        <div class="route-example">
+          <strong>SSL/TLS Inspection</strong>
+          <div class="route old" aria-label="Old path"><span>Policies</span><i>›</i><span>Common Configuration</span><i>›</i><span>SSL/TLS</span><i>›</i><span>Inspection</span><i>›</i><span>SSL/TLS Inspection Policy</span></div>
+          <div class="route new" aria-label="Current path"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div>
+        </div>
+      </div>
+      <p class="micro-note">Legacy screenshots may still show the original menus. When that happens, follow the written path in this web guide.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head stacked"><div class="eyebrow">Lab foundation</div><h2>Environment at a glance</h2><p>The course uses a Skytap pod plus the Zscaler Admin Console to configure and test Internet Access, Private Access, Client Connector, and Digital Experience services.</p></div>
+    <div class="grid grid-2">
+      <figure class="figure" style="margin:0">
+        <button data-lightbox data-caption="Source guide lab topology: Corp Client PC connects to the Zscaler services and the corporate data center contains the Windows server and App Connector."><img src="assets/images/shared/lab-topology.png" alt="EDU-200 lab topology showing Experience Center, Zscaler cloud, Corp Client PC and corporate data center"></button>
+        <figcaption>Lab topology from the source guide.</figcaption>
+      </figure>
+      <div class="card pad">
+        <h3>Core systems</h3>
+        <table class="credentials">
+          <thead><tr><th>System</th><th>Key value</th></tr></thead>
+          <tbody>
+            <tr><td>Corp: Client PC</td><td>Windows 10 · 192.168.1.1</td></tr>
+            <tr><td>Corporate data center</td><td>10.0.0.0/24</td></tr>
+            <tr><td>Corp: App Connector</td><td>10.0.0.4</td></tr>
+            <tr><td>Directory domain</td><td>patraining.safemarch.com</td></tr>
+          </tbody>
+        </table>
+        <details style="margin-top:14px"><summary><strong>Show lab credentials</strong></summary>
+          <table class="credentials" style="margin-top:10px">
+            <tbody>
+              <tr><td>Client PC</td><td><span class="value">student</span> / <span class="value">Admin-123!</span></td></tr>
+              <tr><td>Windows Server</td><td><span class="value">administrator</span> / <span class="value">Admin-123!</span></td></tr>
+              <tr><td>App Connector</td><td><span class="value">admin</span> / <span class="value">zscaler</span></td></tr>
+              <tr><td>Joe / Bev</td><td><span class="value">Admin-123!</span></td></tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="session-access">
+    <div class="section-head stacked session-head"><div class="eyebrow">Your session</div><h2>Two things are unique to you: the tenant and the Skytap pod</h2><p>Your access email contains both. These values are temporary and are valid only for the duration of the training session.</p></div>
+    <div class="grid grid-2 access-grid">
+      <div class="card pad">
+        <div class="feature-icon">ZS</div>
+        <div class="sample-badge">Sample only — not your live credentials</div><h3>Sample Zscaler tenant information</h3><p>Each participant receives a <strong>unique Zscaler tenant</strong> with administrator access for the session. The values below are only an example. <strong>Check your lab-access email for the Student ID, tenant/FQDN, username, password, and URLs assigned to you.</strong></p>
+        <table class="credentials">
+          <tbody>
+            <tr><td>Example Student ID</td><td><span class="value">zs000578</span></td></tr>
+            <tr><td>Example Student FQDN</td><td><span class="value">zs000578.labtenant.com</span></td></tr>
+            <tr><td>Admin username</td><td><span class="value">student@zs000578.labtenant.com</span></td></tr>
+            <tr><td>Admin Console</td><td><span class="value">console.zscaler.com</span></td></tr>
+          </tbody>
+        </table>
+        <div class="callout warning compact-callout"><div class="callout-symbol">!</div><div><div class="callout-title">Do not copy the sample values</div><p>The sample Student ID <strong>zs000578</strong> and related values shown here are not your lab account. Use the credentials from <strong>your own email</strong>.</p></div></div><div class="callout info compact-callout"><div class="callout-symbol">i</div><div><div class="callout-title">Session password</div><p>The access email may label this value <em>One Time Password</em>. For this lab environment, treat it as your <strong>session password</strong>: it remains valid for the training session unless you are explicitly prompted to change it.</p></div></div>
+      </div>
+      <div class="card pad">
+        <div class="feature-icon">VM</div>
+        <h3>Your Skytap pod</h3>
+        <p>Each participant also receives a <strong>unique Skytap link</strong>. It gives you access to the virtual machines used in the hands-on labs and expires with the session.</p>
+        <ul class="clean-list">
+          <li><strong>Corp: Client PC</strong> — learner workstation</li>
+          <li><strong>Corp: Win Svr 2016</strong> — directory, DNS, and internal services</li>
+          <li><strong>Corp: App Connector</strong> — ZPA connector VM</li>
+        </ul>
+        <p class="micro-note">Keep the original access email available during the course; it is the authoritative source for your assigned URL, tenant identity, and session password.</p>
+      </div>
+    </div>
+    <figure class="figure access-example">
+      <button data-lightbox data-caption="SAMPLE ONLY — example Lab Access Details email. Every learner receives different session-specific values. Use the values in your own lab-access email."><img src="assets/images/shared/sample-lab-access.png" alt="Watermarked sample lab access details showing a Skytap link, Zscaler tenant, admin username, and obscured password"></button>
+      <figcaption><strong>Example only:</strong> learner-specific Lab Access Details. Your Student ID, URLs, username, password, and Skytap link will be different.</figcaption>
+    </figure>
+  </section>
+
+  <section class="section" id="sdc-overview">
+    <div class="section-head"><div><div class="eyebrow">Labs 14–16</div><h2>Solutions Demo Center is a separate read-only environment</h2></div><p>Do not use your personal lab tenant for the final three labs.</p></div>
+    <div class="card pad sdc-summary">
+      <div>
+        <h3>What changes at Lab 14</h3>
+        <p>Labs <strong>14, 15, and 16</strong> use a separate, pre-configured <strong>Solutions Demo Center (SDC)</strong> tenant. Learners do not build the configuration there; the goal is to <strong>view, verify, and investigate</strong> existing data and settings.</p>
+        <p>The SDC credentials are included in the same access email. In most tasks you only need the <strong>Admin Username</strong> and <strong>Password</strong>. The first sign-in may also require <strong>2FA enrollment</strong>.</p>
+      </div>
+      <a class="primary-link" href="sdc-access.html">Open the SDC access checkpoint →</a>
+    </div>
+    <div class="callout info"><div class="callout-symbol">↪</div><div><div class="callout-title">Why the detailed SDC steps are not here</div><p>The full SDC sign-in instructions are intentionally placed immediately before Lab 14 so learners see them when they are needed, instead of having to remember them from the beginning of the course.</p></div></div>
+  </section>
+
+  <section class="section" id="contents">
+    <div class="section-head stacked"><div class="eyebrow">Course index</div><h2>16 hands-on labs</h2><p>Expand any lab to view its tasks. A ZPA concepts page appears before Lab 9, and the dedicated SDC access checkpoint appears immediately before Lab 14.</p></div>
+    <div class="card pad" style="padding:14px;margin-bottom:14px"><label for="lab-filter" class="eyebrow" style="display:block;margin-bottom:6px">Quick filter</label><input id="lab-filter" type="search" placeholder="Search labs or tasks…" style="width:100%;border:1px solid var(--border);background:var(--surface-solid);color:var(--text);padding:11px 13px;border-radius:11px;outline:none"></div>
+    <div class="lab-list"><details class="lab-card available" id="lab-1" open><summary><div class="lab-number">01</div><div><div class="lab-title">Connect to the Virtual Lab Environment</div><div class="lab-meta">3 tasks · ~10 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-01.html#task-1-1">1.1 Verify Lab Access</a><a href="lab-01.html#task-1-2">1.2 Use the Lab Clipboard</a><a href="lab-01.html#task-1-3">1.3 Sign In to the Zscaler Admin Console</a></div></details><details class="lab-card available" id="lab-2" ><summary><div class="lab-number">02</div><div><div class="lab-title">Configure User and Administrator Access Entitlements</div><div class="lab-meta">4 tasks · ~40 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-02.html#task-2-1">2.1 Create Departments and User Groups</a><a href="lab-02.html#task-2-2">2.2 Create Users</a><a href="lab-02.html#task-2-3">2.3 Add Administrative and Service Entitlements</a><a href="lab-02.html#task-2-4">2.4 Validate Entitlement Access for Users</a></div></details><details class="lab-card available" id="lab-3" ><summary><div class="lab-number">03</div><div><div class="lab-title">Forward Traffic with Zscaler Client Connector</div><div class="lab-meta">2 tasks · ~20 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-03.html#task-3-1">3.1 Configure Traffic Forwarding Options</a><a href="lab-03.html#task-3-2">3.2 Sign In to Zscaler Client Connector and Verify Protection</a></div></details><details class="lab-card available" id="lab-4" ><summary><div class="lab-number">04</div><div><div class="lab-title">Configure Firewall Filtering Policy</div><div class="lab-meta">3 tasks · ~25 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-04.html#task-4-1">4.1 Test Non-Web Traffic with the Default Firewall Block</a><a href="lab-04.html#task-4-2">4.2 Allow Outbound SSH and ICMP Traffic</a><a href="lab-04.html#task-4-3">4.3 Restrict Applications with Firewall Filtering</a></div></details><details class="lab-card available" id="lab-5" ><summary><div class="lab-number">05</div><div><div class="lab-title">Configure SSL/TLS Inspection Policies</div><div class="lab-meta">3 tasks · ~30 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-05.html#task-5-1">5.1 Enable SSL/TLS Inspection for All Destinations</a><a href="lab-05.html#task-5-2">5.2 Verify Zscaler CA Installation [Optional]</a><a href="lab-05.html#task-5-3">5.3 Review Certificate Pinning Errors</a></div></details><details class="lab-card available" id="lab-6" ><summary><div class="lab-number">06</div><div><div class="lab-title">Configure Content Filtering & Access Control</div><div class="lab-meta">4 tasks · ~25 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-06.html#task-6-1">6.1 View Threat Protection Settings</a><a href="lab-06.html#task-6-2">6.2 Configure Content Filtering Controls</a><a href="lab-06.html#task-6-3">6.3 Test End-User Experience with URL Filtering</a><a href="lab-06.html#task-6-4">6.4 Configure Cloud App Control</a></div></details><details class="lab-card available" id="lab-7" ><summary><div class="lab-number">07</div><div><div class="lab-title">Configure DNS Security</div><div class="lab-meta">3 tasks · ~20 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-07.html#task-7-1">7.1 Configure the Windows App Profile for DNS</a><a href="lab-07.html#task-7-2">7.2 Configure a DNS Control Policy</a><a href="lab-07.html#task-7-3">7.3 View DNS Insight Logs</a></div></details><details class="lab-card available" id="lab-8" ><summary><div class="lab-number">08</div><div><div class="lab-title">Enforce Policy with Unified DLP across Multi-Channel</div><div class="lab-meta">1 task · ~15 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-08.html#task-8-1">8.1 Protect PII Information for Data in Motion</a></div></details><a class="checkpoint-card concept-checkpoint" href="zpa-explainer.html"><div class="checkpoint-icon">ZPA</div><div><strong>Before Lab 9: ZPA Concepts</strong><span>Private application access · App Connectors · application segments · access policy · object relationships</span></div><span class="status concept">Explainer</span></a><details class="lab-card available" id="lab-9" ><summary><div class="lab-number">09</div><div><div class="lab-title">Provision ZPA Infrastructure</div><div class="lab-meta">2 tasks · ~25 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-09.html#task-9-1">9.1 Provision an App Connector</a><a href="lab-09.html#task-9-2">9.2 Activate the App Connector</a></div></details><details class="lab-card available" id="lab-10" ><summary><div class="lab-number">10</div><div><div class="lab-title">Add a Corporate Application</div><div class="lab-meta">3 tasks · ~35 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-10.html#task-10-1">10.1 Configure a Wildcard Application Segment</a><a href="lab-10.html#task-10-2">10.2 Configure User-Specific Access to the Intranet</a><a href="lab-10.html#task-10-3">10.3 Enable ICMP Access</a></div></details><details class="lab-card available" id="lab-11" ><summary><div class="lab-number">11</div><div><div class="lab-title">Troubleshoot Access to an Internal Application for a Specific User</div><div class="lab-meta">2 tasks · ~25 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-11.html#task-11-1">11.1 Identify the Root Cause</a><a href="lab-11.html#task-11-2">11.2 Resolve the Access Issue</a></div></details><details class="lab-card available" id="lab-12" ><summary><div class="lab-number">12</div><div><div class="lab-title">Traffic Forwarding through SIPA</div><div class="lab-meta">3 tasks · ~30 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-12.html#task-12-1">12.1 Configure Source IP Anchoring in ZPA</a><a href="lab-12.html#task-12-2">12.2 Configure ZIA Forwarding for SIPA</a><a href="lab-12.html#task-12-3">12.3 Verify SIPA Functionality</a></div></details><details class="lab-card available" id="lab-13" ><summary><div class="lab-number">13</div><div><div class="lab-title">Access an Internal Application using RDP [Optional]</div><div class="lab-meta">1 task · ~10 minutes</div></div><span class="status live">Hands-on</span></summary><div class="lab-tasks"><a href="lab-13.html#task-13-1">13.1 Verify Access to the Internal Application Using RDP</a></div></details><a class="checkpoint-card" href="sdc-access.html"><div class="checkpoint-icon">SDC</div><div><strong>Before Lab 14: Solutions Demo Center Access</strong><span>Read-only tenant · session credentials · possible 2FA enrollment</span></div><span class="status live">Checkpoint</span></a><details class="lab-card available" id="lab-14" ><summary><div class="lab-number">14</div><div><div class="lab-title">Navigate ZDX Dashboards</div><div class="lab-meta">4 tasks · ~20 minutes · read-only SDC</div></div><span class="status sdc">SDC</span></summary><div class="lab-tasks"><a href="lab-14.html#task-14-1">14.1 View the ZDX Performance Dashboard</a><a href="lab-14.html#task-14-2">14.2 View Incidents and Self-Service Dashboards</a><a href="lab-14.html#task-14-3">14.3 View the Application Overview Dashboard</a><a href="lab-14.html#task-14-4">14.4 View the User Overview Dashboard</a></div></details><details class="lab-card available" id="lab-15" ><summary><div class="lab-number">15</div><div><div class="lab-title">Troubleshoot Poor Wi-Fi</div><div class="lab-meta">5 tasks · ~15 minutes · read-only SDC</div></div><span class="status sdc">SDC</span></summary><div class="lab-tasks"><a href="lab-15.html#task-15-1">15.1 View User ZDX Score for an Application</a><a href="lab-15.html#task-15-2">15.2 Analyze a Poor ZDX Score Interval</a><a href="lab-15.html#task-15-3">15.3 Compare to the Last Known Good Score</a><a href="lab-15.html#task-15-4">15.4 Isolate the High-Latency Hop</a><a href="lab-15.html#task-15-5">15.5 Correlate Device Events with ZDX Score Changes</a></div></details><details class="lab-card available" id="lab-16" ><summary><div class="lab-number">16</div><div><div class="lab-title">Troubleshoot Slow DNS Response</div><div class="lab-meta">4 tasks · ~15 minutes · read-only SDC</div></div><span class="status sdc">SDC</span></summary><div class="lab-tasks"><a href="lab-16.html#task-16-1">16.1 Use ZDX Copilot for Root Cause Analysis</a><a href="lab-16.html#task-16-2">16.2 View the User ZDX Score Over Time</a><a href="lab-16.html#task-16-3">16.3 Analyze High Page Fetch Time</a><a href="lab-16.html#task-16-4">16.4 Confirm the Root Cause with ZDX Analysis</a></div></details></div>
+  </section>
+
+  <div class="page-nav"><div class="disabled"><small>Start here</small><strong>Introduction & course index</strong></div><a class="next" href="lab-01.html"><small>Next</small><strong>Lab 1 →</strong></a></div>
+  <footer class="footer"><span>Unofficial EDU-200 web edition · Author: Rupak Dey</span><span>Designed for static hosting / GitHub Pages</span></footer>
+</div>
+</main>
+
+<a class="floating-logo" href="#main" aria-label="Back to top"><img src="assets/images/zscaler-logo.svg" alt="Zscaler"></a>
+<dialog class="modal" id="image-modal"><img alt="Expanded lab screenshot"><div class="modal-bar"><span data-modal-caption></span><button class="modal-close" data-modal-close>Close</button></div></dialog>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
