@@ -88,7 +88,7 @@ function renderNav() {
     const explainers={
       2:["lab-02.html#entitlements-explainer","Entitlements explained"],
       3:["lab-03.html#profiles-explainer","App + Forwarding Profiles"],
-      5:["lab-05.html#tls-explainer","TLS inspection & pinning"],
+      5:["lab-05.html#tls-explainer","TLS inspection explained"],
       8:["lab-08.html#dlp-explainer","DLP concepts"]
     };
     const concept=active && explainers[lab.n] ? `<a class="nav-link" href="${explainers[lab.n][0]}"><span class="num">i</span><span>${explainers[lab.n][1]}</span></a>`:"";
@@ -112,7 +112,7 @@ function initGlobalSearch(){const input=document.getElementById("global-search-i
   {label:"Lab 2 concept — Administrative and Service Entitlements",href:"lab-02.html#entitlements-explainer"},
   {label:"Lab 3 concept — App Profile + Forwarding Profile",href:"lab-03.html#profiles-explainer"},
   {label:"Lab 5 concept — SSL/TLS inspection, certificates and certificate pinning",href:"lab-05.html#tls-explainer"},
-  {label:"Lab 5 — Threema Web Insights Logs handshake failure filters",href:"lab-05.html#pinning-log-filters"},
+  {label:"Lab 5 deep dive — Why certificate pinning breaks TLS inspection",href:"lab-05.html#certificate-pinning-explainer"},
   {label:"Lab 8 concept — DLP dictionaries, engines and policies",href:"lab-08.html#dlp-explainer"},
   {label:"ZPA concepts — private application access, App Connectors and application segments",href:"zpa-explainer.html"}
 ];COURSE_NAV.forEach(l=>{items.push({label:`Lab ${l.n} — ${l.title}`,href:l.href});l.tasks.forEach(t=>items.push({label:`${t[0]} ${t[1]}`,href:t[2]}));});function render(){const q=input.value.trim().toLowerCase();if(!q){box.hidden=true;box.innerHTML="";return;}const hits=items.filter(x=>x.label.toLowerCase().includes(q)).slice(0,12);box.innerHTML=hits.length?hits.map(x=>`<a href="${x.href}">${x.label}</a>`).join(""):'<div class="search-empty">No matching lab/task</div>';box.hidden=false;}input.addEventListener("input",render);input.addEventListener("focus",render);document.addEventListener("click",e=>{if(!e.target.closest(".global-search"))box.hidden=true;});}

@@ -36,29 +36,9 @@
     <article class="card pad">
       <div class="concept-kicker purple">Certificate pinning</div>
       <h3>Some apps reject replacement certificates</h3>
-      <p>A pinned application expects a specific certificate or key. The ZIA-issued inspection certificate does not match, so the app may fail. Confirm the cause before using a narrowly scoped <strong>Do Not Inspect</strong> exception; understand the visibility tradeoff below.</p>
+      <p>A pinned application expects a specific certificate or key. The ZIA-issued inspection certificate does not match, so the app may fail. The normal fix is a <strong>targeted Do Not Inspect rule</strong>, not a broad bypass.</p>
     </article>
   </div>
-
-
-  <h3 id="certificate-pinning">Certificate pinning: trust is only the first check</h3>
-  <p>Ordinary TLS certificate validation checks the server name, validity period, and chain to a trusted certification authority (CA). Pinning adds an application-controlled restriction: the certificate or public key must match an expected value (often a stored hash). A valid, trusted certificate can therefore still be rejected. Pins may refer to a leaf certificate, a public key, or a CA in the chain; the application's implementation determines what is accepted.</p>
-  <div class="grid grid-3 concept-grid compact-cards pinning-comparison" aria-label="Certificate validation outcomes">
-    <article class="card pad"><div class="concept-kicker">Direct TLS</div><h3>Original identity</h3><p>Server presents its real certificate → normal validation passes → expected pin matches → app connects.</p></article>
-    <article class="card pad"><div class="concept-kicker">Inspected TLS</div><h3>Replacement identity</h3><p>ZIA presents its inspection certificate → CA trust may pass → pinned certificate or key differs → app rejects the connection.</p></article>
-    <article class="card pad"><div class="concept-kicker accent">Targeted Do Not Inspect</div><h3>Original identity preserved</h3><p>ZIA passes the encrypted connection without replacing the certificate → app can validate the server and its pin → connection can succeed.</p></article>
-  </div>
-  <p>During inspection, ZIA terminates the client's TLS connection and creates a separate connection to the destination. Its generated certificate can contain the correct hostname, but it does not carry the destination's pinned identity. ZIA does not possess the destination's private key. Installing the inspection root CA fixes a missing trust anchor; <strong>it does not make a replacement certificate match an application's pin</strong>. The app may stop during the handshake or close the connection afterward, showing only a generic network or WebSocket error. <a href="https://help.zscaler.com/zia/certificate-pinning-and-ssltls-inspection">Zscaler: pinning and inspection</a>.</p>
-  <h3>Why applications pin certificates</h3>
-  <p>Pinning narrows which server identities an app accepts, helping resist impersonation even if an unexpected CA becomes trusted or a certificate is misissued. The same restriction can reject an organization's authorized inspection proxy. Pins also create an availability obligation: certificate/key rotation and app updates must be coordinated or legitimate connections may fail. Pinning should remain under the application vendor's control. <a href="https://cheatsheetseries.owasp.org/cheatsheets/Pinning_Cheat_Sheet.html">OWASP: pinning design and operational risks</a>.</p>
-  <h3>Diagnose first, remediate safely</h3>
-  <ul>
-    <li><strong>Establish the cause.</strong> Correlate the app version, error time, user, destination and logs. Check device time, certificate expiry, CA deployment and the app's own trust store, plus DNS, connectivity and TLS compatibility. A handshake failure alone does not prove pinning.</li>
-    <li><strong>Use a controlled comparison.</strong> With the same client and destination, compare inspection enabled with a temporary, approved exception. Success without inspection supports an inspection compatibility issue; confirm pinning using vendor documentation or diagnostics. Threema documents TLS pinning in its <a href="https://threema.com/en/changelog/threema-20-for-desktop-preview-13">Desktop 2.0 release history</a>.</li>
-    <li><strong>Choose the smallest supported exception.</strong> For confirmed pinning, scope Do Not Inspect to the affected app and intended users/devices or locations where supported. Place it above the general Inspect rule and activate it. Confirm the actual endpoints match; do not guess broad domain wildcards. See <a href="https://help.zscaler.com/zia/configuring-ssltls-inspection-policy">SSL/TLS inspection policy configuration</a>.</li>
-    <li><strong>Prevent repeat incidents.</strong> Pilot app updates and inspection changes, document the exception's owner and business need, review it periodically, and use vendor-supported fixes when available. If the risk is unacceptable, block the app or provide an approved alternative.</li>
-  </ul>
-  <div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Security tradeoff: connectivity versus content visibility</div><p>Do Not Inspect preserves encrypted transport and the app's pin validation, but ZIA cannot inspect the encrypted payload for malware or sensitive data. Controls that rely on decrypted content lose visibility for that traffic; metadata-based controls depend on what remains observable and on policy. Keep endpoint protection, application governance and monitoring in place. This is an inspection exception, not an instruction to bypass traffic forwarding or disable Client Connector.</p><p>Never use “accept all certificates,” disable server verification, patch out pin checks, or turn off inspection globally as a troubleshooting fix. TLS inspection also does not inherently decrypt an application's separate end-to-end message encryption.</p></div></div>
 
   <div class="callout info compact-callout">
     <div class="callout-symbol">i</div>
@@ -77,10 +57,164 @@
     <header class="task-head"><div class="task-num">5.2</div><div><h2>Verify Zscaler CA Installation [Optional]</h2><p>Optionally verify that the Windows trust store contains the Zscaler root certificate.</p></div><label class="task-complete"><input type="checkbox" data-task-check="5.2"> Mark complete</label></header>
     <div class="task-body"><ol class="steps"><li><div class="step-content">Open <strong>certmgr</strong> from Windows Search or Command Prompt.</div></li><li><div class="step-content">Go to <strong>Trusted Root Certification Authorities → Certificates</strong> and verify the Zscaler Root CA exists and is not expired.</div></li><li><div class="step-content">Optionally open <span class="inline-value"><span class="value">chrome://certificate-manager/</span><button class="copy-btn" data-copy="chrome://certificate-manager/">Copy</button></span> → <strong>Local certificates</strong> → <strong>View imported certificates from Windows</strong> and confirm the same trust anchor.</div></li></ol><div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep in mind</div><p>Zscaler Client Connector installs the root CA according to the app-profile settings used in this lab.</p></div></div><div class="reference-gallery"><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 68. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-304.jpg" alt="Reference screenshot for task 5.2 from source guide page 68"></button><figcaption>Reference screenshot · source PDF p.68. <span>Legacy navigation may be visible.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 70. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-311.jpg" alt="Reference screenshot for task 5.2 from source guide page 70"></button><figcaption>Reference screenshot · source PDF p.70. <span>Legacy navigation may be visible.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>The Zscaler Root CA is trusted by Windows/Chrome.</p></div></div></div>
   </article>
-</section><section class="task" id="task-5-3">
+</section>
+<section class="section pinning-primer" id="certificate-pinning-explainer">
+  <div class="section-head stacked">
+    <div class="eyebrow">Technical deep dive · before Task 5.3</div>
+    <h2>Why certificate pinning can break TLS inspection</h2>
+    <p>Certificate pinning adds an application-level trust check on top of normal certificate validation. Instead of accepting any server certificate that chains to a trusted CA, the application expects a particular certificate, public key, or approved set of pins for its back-end service.</p>
+  </div>
+
+  <div class="pinning-visual" role="img" aria-label="Certificate pinning diagram showing why a ZIA inspection certificate can be trusted by the operating system but still rejected by a pinned application, and how a targeted Do Not Inspect rule restores the original server certificate path">
+    <div class="pinning-row">
+      <div class="pinning-row-label normal">Normal TLS inspection</div>
+      <div class="pin-node"><strong>Application</strong><span>Uses normal OS trust</span></div>
+      <div class="pin-arrow"><span>TLS</span>→</div>
+      <div class="pin-node zia"><strong>ZIA inspection</strong><span>Presents a dynamically issued certificate signed by the trusted inspection CA</span></div>
+      <div class="pin-arrow">→</div>
+      <div class="pin-node success"><strong>Accepted</strong><span>Certificate chains to a trusted CA</span></div>
+    </div>
+
+    <div class="pinning-row">
+      <div class="pinning-row-label pinned">Pinned application</div>
+      <div class="pin-node"><strong>Pinned application</strong><span>Checks the expected certificate / public key pin</span></div>
+      <div class="pin-arrow"><span>TLS</span>→</div>
+      <div class="pin-node zia"><strong>ZIA inspection</strong><span>The inspection certificate is trusted by the OS, but it is not the certificate/key the app pinned</span></div>
+      <div class="pin-arrow">→</div>
+      <div class="pin-node failure"><strong>Client aborts</strong><span>Pin mismatch → TLS handshake fails</span></div>
+    </div>
+
+    <div class="pinning-row">
+      <div class="pinning-row-label bypass">Targeted bypass</div>
+      <div class="pin-node"><strong>Pinned application</strong><span>Connects through ZIA without decryption</span></div>
+      <div class="pin-arrow"><span>End-to-end TLS</span>→</div>
+      <div class="pin-node server"><strong>Original server certificate</strong><span>The application sees the certificate/key it expects</span></div>
+      <div class="pin-arrow">→</div>
+      <div class="pin-node success"><strong>Pin matches</strong><span>Connection succeeds</span></div>
+    </div>
+  </div>
+
+  <div class="grid grid-2 pinning-context-grid">
+    <article class="card pad">
+      <div class="concept-kicker">Why applications pin certificates</div>
+      <h3>Extra protection against impersonation</h3>
+      <p>Pinning is intended to make man-in-the-middle attacks harder—even if an attacker can present a certificate that the operating system would normally trust. The application performs its own additional comparison against the expected certificate or key.</p>
+      <p class="micro-note">The trade-off is operational rigidity: certificate rotation, back-end changes, or enterprise TLS interception can break the application unless the pin set or application behavior is updated.</p>
+    </article>
+
+    <article class="card pad">
+      <div class="concept-kicker accent">Why ZIA cannot simply label it “certificate pinning”</div>
+      <h3>The client does not send a pinning-specific error</h3>
+      <p>ZIA sees the client terminate or fail the TLS handshake, but the application does not send a standard message that says “certificate pinning detected.” Different clients can fail in different ways.</p>
+      <p class="micro-note">Treat handshake-failure log reasons as <strong>evidence to investigate</strong>, not as a definitive certificate-pinning signature.</p>
+    </article>
+  </div>
+
+  <div class="grid grid-2 pinning-context-grid">
+    <article class="card pad">
+      <div class="concept-kicker">How to resolve it</div>
+      <h3>Prefer the narrowest supported exception</h3>
+      <ul class="clean-list">
+        <li>Confirm that TLS inspection is the condition that triggers the application failure.</li>
+        <li>If the application/vendor supports an inspection-compatible enterprise option, prefer that supported design.</li>
+        <li>Otherwise create a <strong>targeted Do Not Inspect rule</strong> for the specific cloud application or required domains.</li>
+        <li>Avoid broad category, user, or global bypasses simply to make one pinned application work.</li>
+      </ul>
+    </article>
+
+    <article class="card pad risk-card">
+      <div class="concept-kicker purple">Security implication of bypassing</div>
+      <h3>You restore application compatibility, but lose decrypted-content visibility</h3>
+      <p>The application keeps end-to-end TLS and its pinning protection, but ZIA no longer decrypts that flow. Security controls that require inspection of the encrypted payload therefore lose that visibility for the bypassed traffic.</p>
+      <p class="micro-note"><strong>Design principle:</strong> bypass only what is necessary, document the business reason, and keep the exception as narrow as practical.</p>
+    </article>
+  </div>
+
+  <div class="callout warning compact-callout">
+    <div class="callout-symbol">!</div>
+    <div>
+      <div class="callout-title">Important troubleshooting distinction</div>
+      <p>A trusted Zscaler inspection CA does not guarantee that a pinned application will accept the connection. Normal OS trust and application-level pin validation are two different checks.</p>
+    </div>
+  </div>
+</section>
+
+<section class="task" id="task-5-3">
   <article class="card task-shell">
-    <header class="task-head"><div class="task-num">5.3</div><div><h2>Review Certificate Pinning Errors</h2><p>Reproduce a certificate-pinning failure, bypass inspection only for the affected application, then verify the transaction logs.</p></div><label class="task-complete"><input type="checkbox" data-task-check="5.3"> Mark complete</label></header>
-    <div class="task-body"><div class="nav-path-card"><div class="eyebrow">Current Experience Center navigation</div><div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div><p class="micro-note">Fastest option: use <strong>Search menu</strong> and search for <strong>Web Insights</strong>.</p></div><ol class="steps"><li><div class="step-content">On <strong>Corp: Client PC</strong>, download the Windows <strong>Desktop App 2.0 (Beta)</strong> MSIX from <a href="https://threema.com/en/download/threema-private">https://threema.com/en/download/threema-private</a>. Use the desktop app, not the browser client.</div></li><li><div class="step-content">Install the downloaded MSIX in PowerShell: <span class="inline-value"><span class="value">Add-AppxPackage -Path "$env:USERPROFILE\Downloads\threema-desktop-latest-windows-x64.msix"</span><button class="copy-btn" data-copy='Add-AppxPackage -Path "$env:USERPROFILE\Downloads\threema-desktop-latest-windows-x64.msix"'>Copy</button></span> Adjust the filename/path if your download differs. Wait for installation to finish; installing alone does not generate the app's connection error.</div></li><li><div class="step-content"><strong>Launch Threema Beta</strong> from the Windows Start menu while TLS inspection is active. Allow the app to attempt its connection/linking flow. Observe any <strong>Connection Error</strong>, expand <strong>Show Technical Details</strong>, and record the time. The supplied example shows a RendezvousConnection / WebSocket error. A PowerShell installation error is a separate issue; resolve it before continuing. Completing account linking requires the mobile Threema app, but do not confuse account setup with TLS connectivity.</div></li><li><div class="step-content">Open <strong>Web Insights → Logs</strong> using Experience Center search. Select a timeframe covering the launch attempt and your own lab user. Allow several minutes for logs to arrive. Use the <a href="#pinning-log-filters">filters below</a> to find candidate failures; correlate the URL with Threema and the recorded time before changing policy.</div></li><li><div class="step-content">Open <strong>Internet Access → Policy → SSL/TLS Inspection</strong>. Add a rule at order <strong>1</strong>, above <strong>SSL Inspect All</strong>, named <strong>Bypass Threema</strong>. Under <strong>Cloud Applications</strong>, choose <strong>Instant Messaging → Threema</strong>; set Action to <strong>Do Not Inspect</strong>. Limit scope to the intended lab users/location where available. Save and <strong>Activate</strong>.</div></li><li><div class="step-content">End any running Threema process in Task Manager and <strong>reopen Threema Beta</strong>. Retry the same connection/linking action and record the new time. The earlier TLS-related connection error should no longer prevent progress if the rule matches the affected traffic.</div></li><li><div class="step-content">Return to <strong>Web Insights → Logs</strong>. Retain the before-change evidence, then query the new attempt separately. Check whether the same destination failures recur. Clear failure-only filters to examine any available new transactions and verify the matching inspection exception in the transaction details. An empty failure search alone is not proof of success: combine app behavior with fresh, correlated traffic evidence. If failures persist, check activation, rule order, app/destination matching and other connectivity causes.</div></li></ol><div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep in mind</div><p>Bypass only the application that requires it; do not weaken inspection more broadly than necessary.</p></div></div><div class="card pad" id="pinning-log-filters"><h3>Web Insights Logs: find candidate TLS failures</h3><p>Start with your user and test timeframe. Use these as two diagnostic searches; the screenshots show each filter separately.</p><h4>Client SSL/TLS Handshake Failure Reason</h4><p>Select any of these values (OR within this field):</p><ul><li>Unknown CA</li><li>Close Notify or Client TCP Reset</li><li>Certificate Unknown</li><li>Bad or Unsupported Certificate</li><li>Bad Record Mac</li><li>Handshake Failure</li></ul><h4>SSL/TLS Policy Reason</h4><p>In a separate search, look for <strong>Not inspected because of failed client SSL/TLS handshake</strong>.</p><p><strong>These are possible symptoms, not a definitive pinning signature.</strong> ZIA cannot directly identify certificate pinning, and clients may fail the handshake in different ways. These reasons can also have other causes. The policy reason describes a failed handshake; it does <strong>not</strong> mean a successful Do Not Inspect exception was applied.</p><p class="micro-note">The supplied tenant screenshot abbreviates the policy value as “failed client SSL handshake”; wording may vary by UI version. Match the corresponding failed-client-handshake reason. <a href="https://help.zscaler.com/legacy-zia/web-insights-logs-filters">Zscaler filter reference</a>.</p></div><div class="pinning-evidence"><figure class="figure reference-figure"><button data-lightbox data-caption="Launch first: this is an application connection error, not an MSIX installation error."><img src="assets/images/lab05/threema-error.png" alt="Threema connection error after launching the app, with RendezvousConnection and WebSocket technical details." loading="lazy"></button><figcaption>Launch first: this is an application connection error, not an MSIX installation error. <span>Supplied lab screenshot · click to enlarge.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Handshake filter: Threema rendezvous hosts show Bad Record Mac and Close Notify or Client TCP Reset. The unrelated first row is not evidence about Threema."><img src="assets/images/lab05/threema-logs-1.png" alt="Web Insights Logs filtered by Client SSL/TLS Handshake Failure Reason." loading="lazy"></button><figcaption>Handshake filter: Threema rendezvous hosts show Bad Record Mac and Close Notify or Client TCP Reset. The unrelated first row is not evidence about Threema. <span>Supplied lab screenshot · click to enlarge.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Policy filter: “not inspected” here accompanies dropped connections due to a failed client handshake; it is not a successful inspection exception."><img src="assets/images/lab05/threema-logs-2.png" alt="Web Insights Logs filtered by SSL/TLS Policy Reason for a failed client handshake." loading="lazy"></button><figcaption>Policy filter: “not inspected” here accompanies dropped connections due to a failed client handshake; it is not a successful inspection exception. <span>Supplied lab screenshot · click to enlarge.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>You captured the initial app error and correlated candidate handshake failures, applied a targeted inspection exception, and retried successfully. Record your before/after observations; failure reasons alone do not establish certificate pinning.</p></div></div></div>
+    <header class="task-head">
+      <div class="task-num">5.3</div>
+      <div>
+        <h2>Review Certificate Pinning Errors</h2>
+        <p>Reproduce a TLS-handshake failure with a certificate-pinned application, investigate the symptoms in Web Insights, then apply a targeted inspection bypass.</p>
+      </div>
+      <label class="task-complete"><input type="checkbox" data-task-check="5.3"> Mark complete</label>
+    </header>
+
+    <div class="task-body">
+      <div class="nav-path-card">
+        <div class="eyebrow">Current Experience Center navigation</div>
+        <div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div>
+        <p class="micro-note">For troubleshooting, use <strong>Search menu</strong> and search for <strong>Web Insights</strong>, then open <strong>Logs</strong>.</p>
+      </div>
+
+      <ol class="steps">
+        <li><div class="step-content">On <strong>Corp: Client PC</strong>, download Threema Private Desktop for Windows from <span class="inline-value"><span class="value">https://threema.com/en/download/threema-private</span><button class="copy-btn" data-copy="https://threema.com/en/download/threema-private">Copy</button></span>.</div></li>
+        <li><div class="step-content">Install the downloaded MSIX from PowerShell with <span class="inline-value"><span class="value">Add-AppxPackage -Path .\Downloads\threema-desktop-latest-windows-x64.msix</span><button class="copy-btn" data-copy="Add-AppxPackage -Path .\Downloads\threema-desktop-latest-windows-x64.msix">Copy</button></span><p class="micro-note">If the downloaded filename is different, substitute the actual MSIX filename.</p></div></li>
+        <li><div class="step-content"><strong>Launch Threema Private / Threema Beta after the installation completes.</strong> Installing the package alone does not generate the test condition.</div></li>
+        <li><div class="step-content">With the <strong>SSL Inspect All</strong> rule still active, wait for Threema to attempt its back-end connection. Observe the connection failure.</div></li>
+      </ol>
+
+      <div class="reference-gallery current-gallery single-feature">
+        <figure class="figure reference-figure current-reference">
+          <button data-lightbox data-caption="Example Threema connection failure while TLS inspection is active. The application launches successfully, but the back-end TLS connection does not complete.">
+            <img src="assets/images/lab05/threema-connection-error.png" alt="Threema Connection Error showing that the server connection was lost before linking completed">
+          </button>
+          <figcaption>Expected failure while inspection is active. <span>The exact client message may vary.</span></figcaption>
+        </figure>
+      </div>
+
+      <ol class="steps" start="5">
+        <li><div class="step-content">Open <strong>Web Insights → Logs</strong>. Set a recent timeframe that includes your Threema test and filter on your lab user if needed.</div></li>
+        <li><div class="step-content">Add the filter <strong>Client SSL/TLS Handshake Failure Reason</strong>. Check for one or more of these values:
+          <div class="filter-chips" aria-label="Possible client TLS handshake failure reasons">
+            <span>Unknown CA</span><span>Close Notify or Client TCP Reset</span><span>Certificate Unknown</span><span>Bad or Unsupported Certificate</span><span>Bad Record Mac</span><span>Handshake Failure</span>
+          </div>
+          <div class="callout warning inline-warning"><div class="callout-symbol">!</div><div><div class="callout-title">These are symptoms, not proof of certificate pinning</div><p>ZIA cannot directly identify certificate pinning. A pinned client can terminate the handshake in different ways, so use these values to find relevant failed TLS sessions and correlate them with the application failure.</p></div></div>
+        </div></li>
+      </ol>
+
+      <div class="reference-gallery current-gallery">
+        <figure class="figure reference-figure current-reference">
+          <button data-lightbox data-caption="Web Insights example using Client SSL/TLS Handshake Failure Reason. The log shows failed client handshakes such as Bad Record Mac and Close Notify or Client TCP Reset.">
+            <img src="assets/images/lab05/threema-client-handshake-filter.png" alt="Web Insights Logs filtered by Client SSL TLS Handshake Failure Reason for Threema traffic">
+          </button>
+          <figcaption>Filter example: <strong>Client SSL/TLS Handshake Failure Reason</strong>.</figcaption>
+        </figure>
+      </div>
+
+      <ol class="steps" start="7">
+        <li><div class="step-content">As a second view, use <strong>SSL/TLS Policy Reason</strong> and look for <span class="inline-value"><span class="value">Not inspected because of failed client SSL/TLS handshake</span><button class="copy-btn" data-copy="Not inspected because of failed client SSL/TLS handshake">Copy</button></span>.</div></li>
+      </ol>
+
+      <div class="reference-gallery current-gallery">
+        <figure class="figure reference-figure current-reference">
+          <button data-lightbox data-caption="Web Insights example using SSL/TLS Policy Reason set to Not inspected because of failed client SSL/TLS handshake.">
+            <img src="assets/images/lab05/threema-ssl-policy-reason-filter.png" alt="Web Insights Logs filtered by SSL TLS Policy Reason showing failed client SSL TLS handshake">
+          </button>
+          <figcaption>Filter example: <strong>SSL/TLS Policy Reason → Not inspected because of failed client SSL/TLS handshake</strong>.</figcaption>
+        </figure>
+      </div>
+
+      <ol class="steps" start="8">
+        <li><div class="step-content">Return to <div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div> Add a rule at order <strong>1</strong> named <strong>Bypass Threema</strong>. Under <strong>Cloud Applications</strong>, select <strong>Instant Messaging → Threema</strong>. Set Action to <strong>Do Not Inspect</strong>, then <strong>Save</strong> and <strong>Activate</strong>.</div></li>
+        <li><div class="step-content">End any running Threema process in Task Manager, then reopen the application so it establishes a fresh TLS session.</div></li>
+        <li><div class="step-content">Confirm that Threema now connects. The targeted bypass allows the application to see its original server certificate/key instead of the ZIA-issued inspection certificate.</div></li>
+      </ol>
+
+      <div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep the exception narrow</div><p>Do not disable TLS inspection globally to solve a single pinned application. Use the smallest practical Cloud Application or domain scope and retain the business justification for the exception.</p></div></div>
+
+      <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>Threema fails while TLS inspection is active; Web Insights shows client-handshake failure symptoms that correlate with the test; after the targeted <strong>Do Not Inspect</strong> rule is activated and the app is restarted, Threema connects successfully.</p></div></div>
+    </div>
   </article>
 </section>
 <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Lab 5 complete</div><p>Encrypted traffic inspected with a targeted bypass</p></div></div>

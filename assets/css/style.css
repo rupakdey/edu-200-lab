@@ -422,9 +422,35 @@ p { margin:0 0 1rem; }
   .pipeline-arrow { justify-content:center; transform:rotate(90deg); min-height:20px; }
 }
 
-/* Lab 5 pinning explanation and supplied evidence */
-.pinning-comparison { margin:20px 0; }
-.pinning-evidence { display:grid; gap:22px; margin:24px 0; }
-.pinning-evidence .figure { margin:0; }
-.pinning-evidence .figure:first-child { max-width:680px; }
-#pinning-log-filters { margin-top:24px; scroll-margin-top:90px; }
+
+/* Lab 5 certificate-pinning deep dive */
+.pinning-primer { margin-top:34px; }
+.pinning-primer .section-head p { max-width:1120px; }
+.pinning-visual { display:grid; gap:12px; margin:18px 0 22px; }
+.pinning-row { display:grid; grid-template-columns:150px minmax(180px,1fr) 92px minmax(260px,1.35fr) 52px minmax(180px,1fr); gap:10px; align-items:stretch; padding:12px; border:1px solid var(--border); border-radius:15px; background:var(--surface-2); }
+.pinning-row-label { display:flex; align-items:center; justify-content:center; padding:10px; border-radius:11px; font-size:.72rem; font-weight:900; text-transform:uppercase; letter-spacing:.08em; text-align:center; }
+.pinning-row-label.normal { background:var(--accent-soft); color:var(--accent); }
+.pinning-row-label.pinned { background:color-mix(in srgb,#b26bff 16%,var(--surface-solid)); color:#9b6df0; }
+.pinning-row-label.bypass { background:var(--success-soft); color:var(--success); }
+.pin-node { min-height:92px; padding:13px 14px; border:1px solid var(--border); border-radius:12px; background:var(--surface-solid); display:flex; flex-direction:column; justify-content:center; }
+.pin-node strong { font-size:.9rem; }
+.pin-node span { color:var(--muted); font-size:.76rem; line-height:1.38; margin-top:5px; }
+.pin-node.zia { border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); background:linear-gradient(135deg,var(--accent-soft),var(--surface-solid)); }
+.pin-node.server { border-color:color-mix(in srgb,var(--success) 35%,var(--border)); }
+.pin-node.success { background:var(--success-soft); border-color:color-mix(in srgb,var(--success) 38%,var(--border)); }
+.pin-node.failure { background:color-mix(in srgb,#ef4444 10%,var(--surface-solid)); border-color:color-mix(in srgb,#ef4444 35%,var(--border)); }
+.pin-arrow { display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--accent); font-weight:900; font-size:1.25rem; text-align:center; }
+.pin-arrow span { color:var(--muted); font-size:.67rem; font-weight:700; margin-bottom:4px; }
+.pinning-context-grid { align-items:stretch; margin-top:16px; }
+.risk-card { border-color:color-mix(in srgb,#a985ff 28%,var(--border)); }
+.inline-warning { margin-top:14px; }
+.filter-chips { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 4px; }
+.filter-chips span { display:inline-flex; align-items:center; padding:6px 9px; border:1px solid var(--border); border-radius:999px; background:var(--surface-2); color:var(--text); font-size:.76rem; font-weight:750; }
+.current-gallery { margin-top:16px; }
+.current-gallery.single-feature { grid-template-columns:minmax(0,860px); justify-content:start; }
+.current-reference figcaption strong { color:var(--text); }
+@media (max-width:1200px) {
+  .pinning-row { grid-template-columns:1fr; }
+  .pinning-row-label { justify-content:flex-start; }
+  .pin-arrow { min-height:24px; transform:rotate(90deg); }
+}

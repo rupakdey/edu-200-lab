@@ -27,9 +27,4 @@ This is an independent, simplified learning aid and **not an official Zscaler la
 - Lab 2 starts with a concise explainer for **Administrative vs. Service Entitlements**.
 - Lab 5 starts with a concise explainer for **SSL/TLS inspection, certificate trust, and certificate pinning**.
 - Lab 8 starts with a concise explainer for the **DLP Dictionary → Engine → Policy** model.
-
-## v5 — Lab 5 update (5 October 2026)
-
-Expanded certificate-pinning explanation, comparison visual, safe remediation and security tradeoffs. Task 5.3 now separates installation and launch (step 3), uses the current Threema Private download page, and includes symptom-based Web Insights filters and before/after validation. All three supplied Threema screenshots are embedded with captions and enlargement. Vendor references are linked in Lab 5. Other labs retain v4 content.
-
-To update GitHub Pages, copy the contents of this folder into the existing repository root.
+- Lab 5 Task 5.3 includes a certificate-pinning deep dive, current Threema failure/log examples, Web Insights handshake filters, and a targeted bypass workflow.
