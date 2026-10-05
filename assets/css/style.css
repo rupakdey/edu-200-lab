@@ -421,3 +421,10 @@ p { margin:0 0 1rem; }
   .dlp-pipeline { grid-template-columns:1fr; }
   .pipeline-arrow { justify-content:center; transform:rotate(90deg); min-height:20px; }
 }
+
+/* Lab 5 pinning explanation and supplied evidence */
+.pinning-comparison { margin:20px 0; }
+.pinning-evidence { display:grid; gap:22px; margin:24px 0; }
+.pinning-evidence .figure { margin:0; }
+.pinning-evidence .figure:first-child { max-width:680px; }
+#pinning-log-filters { margin-top:24px; scroll-margin-top:90px; }
