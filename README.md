@@ -28,3 +28,5 @@ This is an independent, simplified learning aid and **not an official Zscaler la
 - Lab 5 starts with a concise explainer for **SSL/TLS inspection, certificate trust, and certificate pinning**.
 - Lab 8 starts with a concise explainer for the **DLP Dictionary → Engine → Policy** model.
 - Lab 5 Task 5.3 includes a certificate-pinning deep dive, current Threema failure/log examples, Web Insights handshake filters, and a targeted bypass workflow.
+- Lab 12.2 now separates Private Access GW creation from the Forwarding Control rule and adds a Source IP Anchor troubleshooting check.
+- Lab 12.2 now uses current Private Access GW and Forwarding Control screenshots; the older PDF reference screenshots were removed.

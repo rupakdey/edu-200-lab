@@ -59,10 +59,140 @@
   </article>
 </section><section class="task" id="task-12-2">
   <article class="card task-shell">
-    <header class="task-head"><div class="task-num">12.2</div><div><h2>Configure ZIA Forwarding for SIPA</h2><p>Create the ZIA forwarding rule that sends the SIPA destination to the ZPA gateway.</p></div><label class="task-complete"><input type="checkbox" data-task-check="12.2"> Mark complete</label></header>
-    <div class="task-body"><div class="nav-path-card"><div class="eyebrow">Current Experience Center navigation</div><div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>Forwarding Control</span></div></div><ol class="steps"><li><div class="step-content">Open <div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>Forwarding Control</span></div> Use the ZPA/Private Access gateway section to <strong>Add Gateway for ZPA</strong> and name it <strong>SIPA Gateway</strong>. Select the SIPA server group/application segment surfaced from ZPA.</div></li><li><div class="step-content">Add a Forwarding Control rule:<table class="credentials settings-table"><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td>Rule Name</td><td>SIPA Forward</td></tr><tr><td>Rule Status</td><td>Enabled</td></tr><tr><td>Forwarding Method</td><td>ZPA</td></tr><tr><td>Destination</td><td>SIPA Application segment</td></tr><tr><td>Forward to ZPA Gateway</td><td>SIPA Gateway</td></tr></tbody></table></div></li><li><div class="step-content">Save and <strong>Activate</strong> the change.</div></li></ol><div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep in mind</div><p>The source PDF uses the older Infrastructure → Internet & SaaS → Network Policies navigation. In the new Experience Center menu, Forwarding Control is exposed under Internet Access → Policy.</p></div></div><div class="reference-gallery"><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 172. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-647.jpg" alt="Reference screenshot for task 12.2 from source guide page 172"></button><figcaption>Reference screenshot · source PDF p.172. <span>Legacy navigation may be visible.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 173. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-650.jpg" alt="Reference screenshot for task 12.2 from source guide page 173"></button><figcaption>Reference screenshot · source PDF p.173. <span>Legacy navigation may be visible.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>Traffic matching the SIPA Application destination is forwarded from ZIA to the SIPA Gateway in ZPA.</p></div></div></div>
+    <header class="task-head">
+      <div class="task-num">12.2</div>
+      <div>
+        <h2>Configure ZIA Forwarding for SIPA</h2>
+        <p>Create the Private Access gateway first, then create the Forwarding Control rule that sends the SIPA application through that gateway.</p>
+      </div>
+      <label class="task-complete"><input type="checkbox" data-task-check="12.2"> Mark complete</label>
+    </header>
+
+    <div class="task-body">
+      <div class="callout info">
+        <div class="callout-symbol">i</div>
+        <div>
+          <div class="callout-title">Two ZIA objects are required</div>
+          <p><strong>Private Access GW</strong> maps ZIA to the SIPA-enabled ZPA server group/application segment. <strong>Forwarding Control</strong> then selects matching traffic and sends it to that gateway.</p>
+        </div>
+      </div>
+
+      <ol class="steps">
+        <li>
+          <div class="step-content">
+            Open the Private Access gateway configuration:
+            <div class="route new"><span>Infrastructure</span><i>›</i><span>Internet &amp; SaaS</span><i>›</i><span>Private Access GW</span></div>
+            <p class="micro-note">You can also use the Experience Center search and search for <strong>Private Access GW</strong>.</p>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-content">
+            Click <strong>Add Gateway for ZPA</strong> / <strong>Add Private Access Gateway</strong> and configure:
+            <table class="credentials settings-table">
+              <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Gateway Name</td><td><strong>SIPA Gateway</strong></td></tr>
+                <tr><td>Server Group</td><td><strong>SIPA Server</strong></td></tr>
+                <tr><td>Application Segment</td><td><strong>SIPA Application</strong></td></tr>
+                <tr><td>Description</td><td>Optional</td></tr>
+              </tbody>
+            </table>
+            <p class="micro-note">After selecting the SIPA server group, the associated SIPA-enabled application segment should be available for selection.</p>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-content">Save the Private Access gateway and <strong>Activate</strong> the change.</div>
+        </li>
+      </ol>
+
+      <div class="reference-gallery current-gallery single-feature">
+        <figure class="figure reference-figure current-reference">
+          <button data-lightbox data-caption="Current Private Access GW configuration for SIPA. SIPA Gateway uses the SIPA Server server group and shows the associated SIPA-Application segment.">
+            <img src="assets/images/lab12/add-private-access-gateway.png" alt="Add Gateway for ZPA dialog showing SIPA Gateway, SIPA Server, and SIPA-Application">
+          </button>
+          <figcaption>Private Access GW example: <strong>SIPA Gateway</strong> with <strong>SIPA Server</strong> and the associated <strong>SIPA-Application</strong> segment.</figcaption>
+        </figure>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-symbol">!</div>
+        <div>
+          <div class="callout-title">Quick troubleshooting: Server Group not available?</div>
+          <p>If <strong>SIPA Server</strong> is not visible when creating the Private Access gateway, return to the ZPA application segment and verify that <strong>SIPA Application</strong> has <strong>Source IP Anchor = Enabled</strong>. This is required for the SIPA server group/application segment to be surfaced for the gateway configuration.</p>
+        </div>
+      </div>
+
+      <div class="reference-gallery current-gallery single-feature">
+        <figure class="figure reference-figure current-reference">
+          <button data-lightbox data-caption="SIPA Application / Segment configuration with Source IP Anchor enabled. If the expected server group is missing when creating the Private Access gateway, verify this setting first.">
+            <img src="assets/images/lab12/sipa-segment-source-ip-anchor.png" alt="SIPA Segment configuration showing Source IP Anchor enabled">
+          </button>
+          <figcaption>Verify <strong>Source IP Anchor = Enabled</strong> on the SIPA application segment.</figcaption>
+        </figure>
+      </div>
+
+      <ol class="steps" start="4">
+        <li>
+          <div class="step-content">
+            Open:
+            <div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>Forwarding Control</span></div>
+            Click <strong>Add Forwarding Rule</strong>.
+          </div>
+        </li>
+
+        <li>
+          <div class="step-content">
+            Configure the SIPA forwarding rule:
+            <table class="credentials settings-table">
+              <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Rule Name</td><td><strong>SIPA Forward</strong></td></tr>
+                <tr><td>Rule Status</td><td><strong>Enabled</strong></td></tr>
+                <tr><td>Forwarding Method</td><td><strong>ZPA</strong></td></tr>
+                <tr><td>Application Segment / Destination</td><td><strong>SIPA Application</strong></td></tr>
+                <tr><td>Forward to ZPA Gateway</td><td><strong>SIPA Gateway</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+
+      <div class="reference-gallery current-gallery single-feature">
+        <figure class="figure reference-figure current-reference">
+          <button data-lightbox data-caption="Current Forwarding Control rule for SIPA. Destination uses ZPA Application Segment SIPA-Application, Forwarding Method is ZPA, and the action forwards to SIPA-Gateway.">
+            <img src="assets/images/lab12/sipa-forwarding-control-rule.png" alt="Forwarding Control rule showing SIPA-Application, Forwarding Method ZPA, and SIPA-Gateway">
+          </button>
+          <figcaption>Forwarding Control example: match <strong>SIPA-Application</strong>, select <strong>ZPA</strong>, and forward to <strong>SIPA-Gateway</strong>.</figcaption>
+        </figure>
+      </div>
+
+        <li>
+          <div class="step-content">Save the forwarding rule and <strong>Activate</strong> the change.</div>
+        </li>
+      </ol>
+
+      <div class="callout info">
+        <div class="callout-symbol">i</div>
+        <div>
+          <div class="callout-title">Why the order matters</div>
+          <p>The Forwarding Control rule can only send SIPA traffic to a usable ZPA gateway after the <strong>Private Access GW</strong> object exists and is mapped to the correct SIPA-enabled server group/application segment.</p>
+          <p class="micro-note">Official reference: <a href="https://help.zscaler.com/zia/configuring-private-access-gateway" target="_blank" rel="noopener">Configuring Private Access Gateway</a>.</p>
+        </div>
+      </div>
+
+      <div class="callout success">
+        <div class="callout-symbol">✓</div>
+        <div>
+          <div class="callout-title">Expected result</div>
+          <p><strong>SIPA Gateway</strong> maps ZIA to the SIPA-enabled ZPA objects, and the <strong>SIPA Forward</strong> rule sends traffic matching <strong>SIPA Application</strong> to that gateway.</p>
+        </div>
+      </div>
+    </div>
   </article>
-</section><section class="task" id="task-12-3">
+</section>
+
+<section class="task" id="task-12-3">
   <article class="card task-shell">
     <header class="task-head"><div class="task-num">12.3</div><div><h2>Verify SIPA Functionality</h2><p>Prove that the selected destination uses the anchored path, then move the SIPA mapping to another domain.</p></div><label class="task-complete"><input type="checkbox" data-task-check="12.3"> Mark complete</label></header>
     <div class="task-body"><div class="nav-path-card"><div class="eyebrow">Current Experience Center navigation</div><div class="route new"><span>Private Access</span><i>›</i><span>Policies</span><i>›</i><span>Access Control</span><i>›</i><span>Private Applications</span><i>›</i><span>Defined Application Segments</span></div></div><ol class="steps"><li><div class="step-content">On Corp: Client PC browse to <span class="inline-value"><span class="value">https://ip.zscaler.com</span><button class="copy-btn" data-copy="https://ip.zscaler.com">Copy</button></span> and record the displayed public IP. It should differ from the normal ZIA egress observed at the start of Lab 12.</div></li><li><div class="step-content">Edit the <strong>SIPA Application</strong> segment in Private Access. Remove <strong>ip.zscaler.com</strong> and add <strong>ping.eu</strong> instead; save.</div></li><li><div class="step-content">Browse to <span class="inline-value"><span class="value">https://ping.eu</span><button class="copy-btn" data-copy="https://ping.eu">Copy</button></span> and observe the public IP. Traffic for the newly defined application should now use the ZPA-SIPA egress path.</div></li></ol><div class="reference-gallery"><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 177. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-606.jpg" alt="Reference screenshot for task 12.3 from source guide page 177"></button><figcaption>Reference screenshot · source PDF p.177. <span>Legacy navigation may be visible.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 179. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-668.jpg" alt="Reference screenshot for task 12.3 from source guide page 179"></button><figcaption>Reference screenshot · source PDF p.179. <span>Legacy navigation may be visible.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>The anchored egress follows whichever public application is currently mapped into the SIPA Application segment.</p></div></div></div>
