@@ -1,0 +1,17 @@
+course:
+  id: EDU-200
+  title: Zscaler for Users - Administrator
+  subtitle: Zscaler for Users Lab Guide
+  author: Rupak Dey
+labs:
+  count: 16
+  sdc_start: 14
+environment:
+  dedicated_tenant: true
+  skytap: false
+  cloudshare: true
+design:
+  screenshot_max_page_fraction: 0.6667
+  screenshot_max_height_px: 1490
+  allow_image_upscaling: false
+  current_navigation: true

@@ -1,223 +1,172 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="EDU-200 Lab 5: Configure SSL/TLS Inspection Policies"><title>Lab 5 | Configure SSL/TLS Inspection Policies | EDU-200</title><link rel="stylesheet" href="assets/css/style.css"><script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head>
-<body data-page="lab-05"><a class="skip-link" href="#main">Skip to content</a><div id="course-nav"></div><header class="topbar">
-  <div class="topbar-left"><button class="icon-btn mobile-menu" data-menu-toggle aria-label="Open course navigation">☰</button><div class="breadcrumb"><a href="index.html">EDU-200</a> / <strong>Lab 5</strong> / Configure SSL/TLS Inspection Policies</div></div>
-  <div class="topbar-actions"><div class="global-search"><input id="global-search-input" type="search" placeholder="Search labs or tasks…" aria-label="Search course"><div id="global-search-results" class="global-search-results"></div></div><button class="icon-btn" data-theme-toggle aria-label="Toggle dark or light mode"><span data-theme-icon>☾</span></button></div>
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="EDU-200 Lab 5: Configure SSL/TLS Inspection Policies" name="description"/><title>Lab 5 | Configure SSL Inspection Policies | EDU-200 Rev 3.0</title><link href="assets/css/style.css" rel="stylesheet"/><script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script><link href="assets/images/shared/favicon.svg" rel="icon" type="image/svg+xml"/></head>
+<body data-course-id="EDU-200" data-page="lab-05" data-storage-prefix="edu200"><a class="skip-link" href="#main">Skip to content</a><div id="course-nav"></div><header class="topbar">
+<div class="topbar-left"><button aria-label="Open course navigation" class="icon-btn mobile-menu" data-menu-toggle="">☰</button><div class="breadcrumb"><a href="index.html">EDU-200</a> / <strong>Lab 5</strong> / Configure SSL/TLS Inspection Policies</div></div>
+<div class="topbar-actions"><div class="global-search"><input aria-label="Search course" id="global-search-input" placeholder="Search labs or tasks…" type="search"/><div class="global-search-results" id="global-search-results"></div></div><button aria-label="Toggle dark or light mode" class="icon-btn" data-theme-toggle=""><span data-theme-icon="">☾</span></button></div>
 </header>
 <main class="main" id="main"><div class="content">
-<section class="lab-hero"><div><div class="eyebrow">Lab 5</div><h1>Configure SSL/TLS Inspection Policies</h1><p>Enable TLS inspection, verify the Zscaler CA, and handle a certificate-pinning application.</p><div class="lab-facts"><span class="fact"><strong>Time:</strong> ~30 minutes</span><span class="fact"><strong>Tasks:</strong> 3</span><span class="fact"><strong>Outcome:</strong> Encrypted traffic inspected with a targeted bypass</span></div></div></section>
-<div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Use your assigned tenant</div><p>Use the Student ID, Student FQDN, session password, and Skytap link from <strong>your own lab-access email</strong>. Values shown in examples and screenshots are not your live credentials.</p></div></div>
-
+<section class="lab-hero"><div><div class="eyebrow">Lab 5</div><h1>Configure SSL Inspection Policies</h1><p>Enable TLS inspection, verify the Zscaler CA, and handle a certificate-pinning application.</p><div class="lab-facts"><span class="fact"><strong>Time:</strong> ~30 minutes</span><span class="fact"><strong>Tasks:</strong> 3</span><span class="fact"><strong>Outcome:</strong> Encrypted traffic inspected with a targeted bypass</span></div></div></section>
+<div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Use your assigned tenant</div><p>Use the Student ID, Student FQDN, session password, and CloudShare link from <strong>your own lab-access email</strong>. Values shown in examples and screenshots are not your live credentials.</p></div></div>
 <section class="section concept-primer compact-concept" id="tls-explainer">
-  <div class="section-head stacked">
-    <div class="eyebrow">Technical concept</div>
-    <h2>What SSL/TLS inspection is doing</h2>
-    <p>HTTPS protects data in transit, but encryption also hides content from security controls. ZIA TLS inspection creates two encrypted sessions so it can decrypt, inspect, apply policy, and then re-encrypt the traffic.</p>
-  </div>
-
-  <div class="tls-flow" role="img" aria-label="User establishes TLS to ZIA, ZIA inspects the decrypted content, and ZIA establishes a separate TLS session to the destination website">
-    <div class="tls-node"><strong>User / browser</strong><span>Trusts the inspection CA</span></div>
-    <div class="tls-link"><span>TLS session 1</span><b>→</b></div>
-    <div class="tls-node inspect-node"><strong>ZIA Service Edge</strong><span>Decrypt → inspect → enforce → re-encrypt</span></div>
-    <div class="tls-link"><span>TLS session 2</span><b>→</b></div>
-    <div class="tls-node"><strong>Destination</strong><span>Original server certificate</span></div>
-  </div>
-
-  <div class="grid grid-3 concept-grid compact-cards">
-    <article class="card pad">
-      <div class="concept-kicker">Why inspect?</div>
-      <h3>Security needs visibility</h3>
-      <p>Inspection lets ZIA evaluate encrypted web traffic for threats, data protection, and other content-aware policies.</p>
-    </article>
-    <article class="card pad">
-      <div class="concept-kicker accent">Certificates</div>
-      <h3>The endpoint must trust the inspection CA</h3>
-      <p>ZIA presents a dynamically issued inspection certificate to the client. In this lab, Client Connector deploys the trusted Zscaler CA according to the App Profile.</p>
-    </article>
-    <article class="card pad">
-      <div class="concept-kicker purple">Certificate pinning</div>
-      <h3>Some apps reject replacement certificates</h3>
-      <p>A pinned application expects a specific certificate or key. The ZIA-issued inspection certificate does not match, so the app may fail. The normal fix is a <strong>targeted Do Not Inspect rule</strong>, not a broad bypass.</p>
-    </article>
-  </div>
-
-  <div class="callout info compact-callout">
-    <div class="callout-symbol">i</div>
-    <div><div class="callout-title">What you will prove in Lab 5</div>
-    <p>First compare the certificate before and after inspection, then optionally verify the trusted root CA, and finally reproduce a certificate-pinning failure and bypass only the affected application.</p></div>
-  </div>
+<div class="section-head stacked">
+<div class="eyebrow">Technical concept</div>
+<h2>What SSL/TLS inspection is doing</h2>
+<p>HTTPS protects data in transit, but encryption also hides content from security controls. ZIA TLS inspection creates two encrypted sessions so it can decrypt, inspect, apply policy, and then re-encrypt the traffic.</p>
+</div>
+<div aria-label="User establishes TLS to ZIA, ZIA inspects the decrypted content, and ZIA establishes a separate TLS session to the destination website" class="tls-flow" role="img">
+<div class="tls-node"><strong>User / browser</strong><span>Trusts the inspection CA</span></div>
+<div class="tls-link"><span>TLS session 1</span><b>→</b></div>
+<div class="tls-node inspect-node"><strong>ZIA Service Edge</strong><span>Decrypt → inspect → enforce → re-encrypt</span></div>
+<div class="tls-link"><span>TLS session 2</span><b>→</b></div>
+<div class="tls-node"><strong>Destination</strong><span>Original server certificate</span></div>
+</div>
+<div class="grid grid-3 concept-grid compact-cards">
+<article class="card pad">
+<div class="concept-kicker">Why inspect?</div>
+<h3>Security needs visibility</h3>
+<p>Inspection lets ZIA evaluate encrypted web traffic for threats, data protection, and other content-aware policies.</p>
+</article>
+<article class="card pad">
+<div class="concept-kicker accent">Certificates</div>
+<h3>The endpoint must trust the inspection CA</h3>
+<p>ZIA presents a dynamically issued inspection certificate to the client. In this lab, Client Connector deploys the trusted Zscaler CA according to the App Profile.</p>
+</article>
+<article class="card pad">
+<div class="concept-kicker purple">Certificate pinning</div>
+<h3>Some apps reject replacement certificates</h3>
+<p>A pinned application expects a specific certificate or key. The ZIA-issued inspection certificate does not match, so the app may fail. The normal fix is a <strong>targeted Do Not Inspect rule</strong>, not a broad bypass.</p>
+</article>
+</div>
+<div class="callout info compact-callout">
+<div class="callout-symbol">i</div>
+<div><div class="callout-title">What you will prove in Lab 5</div>
+<p>First compare the certificate before and after inspection, then optionally verify the trusted root CA, and finally reproduce a certificate-pinning failure and bypass only the affected application.</p></div>
+</div>
 </section>
-
 <section class="task" id="task-5-1">
-  <article class="card task-shell">
-    <header class="task-head"><div class="task-num">5.1</div><div><h2>Enable SSL/TLS Inspection for All Destinations</h2><p>Turn on TLS inspection for encrypted traffic and confirm the certificate chain changes.</p></div><label class="task-complete"><input type="checkbox" data-task-check="5.1"> Mark complete</label></header>
-    <div class="task-body"><div class="nav-path-card"><div class="eyebrow">Current Experience Center navigation</div><div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div></div><ol class="steps"><li><div class="step-content">Before the policy change, open an Incognito Chrome window to <span class="inline-value"><span class="value">https://www.wikipedia.org</span><button class="copy-btn" data-copy="https://www.wikipedia.org">Copy</button></span> and inspect the site certificate. Note the original server certificate issuer.</div></li><li><div class="step-content">Open <div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div> Select <strong>Add SSL Inspection Rule</strong>.</div></li><li><div class="step-content">Configure Rule Order <strong>1</strong>, Rule Name <strong>SSL Inspect All</strong>, and Action <strong>Inspect</strong>. Save and <strong>Activate</strong>.</div></li><li><div class="step-content">Close/reopen Incognito (or refresh), revisit Wikipedia, and inspect the certificate again. It should now be signed through Zscaler.</div></li></ol><div class="reference-gallery"><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 63. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-285.jpg" alt="Reference screenshot for task 5.1 from source guide page 63"></button><figcaption>Reference screenshot · source PDF p.63. <span>Legacy navigation may be visible.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 67. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-301.jpg" alt="Reference screenshot for task 5.1 from source guide page 67"></button><figcaption>Reference screenshot · source PDF p.67. <span>Legacy navigation may be visible.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>HTTPS traffic matches SSL Inspect All and the browser sees a Zscaler-issued inspection certificate.</p></div></div></div>
-  </article>
+<article class="card task-shell">
+<header class="task-head"><div class="task-num">5.1</div><div><h2>Enable SSL Inspection for All Destinations</h2><p>Turn on TLS inspection for encrypted traffic and confirm the certificate chain changes.</p></div><label class="task-complete"><input data-task-check="5.1" type="checkbox"/> Mark complete</label></header>
+<div class="task-body"><div class="resource-locator"><div class="eyebrow">Experience Center · find this resource</div><div aria-label="Experience Center navigation path" class="ec-nav-path" role="group"><span class="ec-nav-step">Internet Access</span><span aria-hidden="true" class="ec-nav-separator">›</span><span class="ec-nav-step">Policy</span><span aria-hidden="true" class="ec-nav-separator">›</span><span class="ec-nav-step">SSL/TLS Inspection</span></div><p class="search-hint">Search Menu → <strong>SSL/TLS Inspection</strong></p><p class="doc-reference">Official documentation: <a href="https://help.zscaler.com/zia/configuring-ssltls-inspection-policy" rel="noopener noreferrer" target="_blank">SSL/TLS Inspection Policy</a></p></div><ol class="steps"><li><div class="step-content">Before the policy change, open an Incognito Chrome window to <span class="inline-value"><span class="value">https://www.wikipedia.org</span><button class="copy-btn" data-copy="https://www.wikipedia.org">Copy</button></span> and inspect the site certificate. Note the original server certificate issuer.<figure class="figure source-figure optimized-figure"><button data-caption="Verify the current SSL Inspection status:" data-lightbox=""><img alt="Verify the current SSL Inspection status:" loading="lazy" src="assets/images/rev3/img-061.png"/></button><figcaption>Verify the current SSL Inspection status:</figcaption></figure></div></li><li><div class="step-content">Open <div aria-label="Experience Center navigation path" class="ec-nav-path" role="group"><span class="ec-nav-step">Internet Access</span><span aria-hidden="true" class="ec-nav-separator">›</span><span class="ec-nav-step">Policy</span><span aria-hidden="true" class="ec-nav-separator">›</span><span class="ec-nav-step">SSL/TLS Inspection</span></div> Select <strong>Add SSL Inspection Rule</strong>.<figure class="figure source-figure optimized-figure"><button data-caption="Verify the current SSL Inspection status:" data-lightbox=""><img alt="Verify the current SSL Inspection status:" loading="lazy" src="assets/images/rev3/img-062.png"/></button><figcaption>Verify the current SSL Inspection status:</figcaption></figure><figure class="figure source-figure optimized-figure"><button data-caption="Enable SSL Inspection:" data-lightbox=""><img alt="Enable SSL Inspection:" loading="lazy" src="assets/images/rev3/img-063.png"/></button><figcaption>Enable SSL Inspection:</figcaption></figure></div></li><li><div class="step-content">Configure Rule Order <strong>1</strong>, Rule Name <strong>SSL Inspect All</strong>, and Action <strong>Inspect</strong>. Save and <strong>Activate</strong>.<figure class="figure source-figure optimized-figure"><button data-caption="Enable SSL Inspection:" data-lightbox=""><img alt="Enable SSL Inspection:" loading="lazy" src="assets/images/rev3/img-064.png"/></button><figcaption>Enable SSL Inspection:</figcaption></figure></div></li><li><div class="step-content">Close/reopen Incognito (or refresh), revisit Wikipedia, and inspect the certificate again. It should now be signed through Zscaler.<figure class="figure source-figure optimized-figure"><button data-caption="Enable SSL Inspection:" data-lightbox=""><img alt="Enable SSL Inspection:" loading="lazy" src="assets/images/rev3/img-056.png"/></button><figcaption>Enable SSL Inspection:</figcaption></figure><figure class="figure source-figure optimized-figure"><button data-caption="Verify Inspection status:" data-lightbox=""><img alt="Verify Inspection status:" loading="lazy" src="assets/images/rev3/img-065.png"/></button><figcaption>Verify Inspection status:</figcaption></figure></div></li></ol><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>HTTPS traffic matches SSL Inspect All and the browser sees a Zscaler-issued inspection certificate.</p></div></div></div>
+</article>
 </section><section class="task" id="task-5-2">
-  <article class="card task-shell">
-    <header class="task-head"><div class="task-num">5.2</div><div><h2>Verify Zscaler CA Installation [Optional]</h2><p>Optionally verify that the Windows trust store contains the Zscaler root certificate.</p></div><label class="task-complete"><input type="checkbox" data-task-check="5.2"> Mark complete</label></header>
-    <div class="task-body"><ol class="steps"><li><div class="step-content">Open <strong>certmgr</strong> from Windows Search or Command Prompt.</div></li><li><div class="step-content">Go to <strong>Trusted Root Certification Authorities → Certificates</strong> and verify the Zscaler Root CA exists and is not expired.</div></li><li><div class="step-content">Optionally open <span class="inline-value"><span class="value">chrome://certificate-manager/</span><button class="copy-btn" data-copy="chrome://certificate-manager/">Copy</button></span> → <strong>Local certificates</strong> → <strong>View imported certificates from Windows</strong> and confirm the same trust anchor.</div></li></ol><div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep in mind</div><p>Zscaler Client Connector installs the root CA according to the app-profile settings used in this lab.</p></div></div><div class="reference-gallery"><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 68. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-304.jpg" alt="Reference screenshot for task 5.2 from source guide page 68"></button><figcaption>Reference screenshot · source PDF p.68. <span>Legacy navigation may be visible.</span></figcaption></figure><figure class="figure reference-figure"><button data-lightbox data-caption="Reference screenshot from source EDU-200 PDF, page 70. Legacy navigation may be visible; follow the written path in this web guide."><img src="assets/images/reference/xref-311.jpg" alt="Reference screenshot for task 5.2 from source guide page 70"></button><figcaption>Reference screenshot · source PDF p.70. <span>Legacy navigation may be visible.</span></figcaption></figure></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>The Zscaler Root CA is trusted by Windows/Chrome.</p></div></div></div>
-  </article>
+<article class="card task-shell">
+<header class="task-head"><div class="task-num">5.2</div><div><h2>Verify Zscaler CA Installation [Optional]</h2><p>Optionally verify that the Windows trust store contains the Zscaler root certificate.</p></div><label class="task-complete"><input data-task-check="5.2" type="checkbox"/> Mark complete</label></header>
+<div class="task-body"><div class="resource-locator"><div class="eyebrow">Experience Center · find this resource</div><p class="search-hint">Search Menu → <strong>SSL/TLS Inspection</strong></p></div><ol class="steps"><li><div class="step-content">Open <strong>certmgr</strong> from Windows Search or Command Prompt.<figure class="figure source-figure optimized-figure"><button data-caption="Open the certmgr tool:" data-lightbox=""><img alt="Open the certmgr tool:" loading="lazy" src="assets/images/rev3/img-066.png"/></button><figcaption>Open the certmgr tool:</figcaption></figure></div></li><li><div class="step-content">Go to <strong>Trusted Root Certification Authorities → Certificates</strong> and verify the Zscaler Root CA exists and is not expired.<figure class="figure source-figure optimized-figure"><button data-caption="Confirm the following:" data-lightbox=""><img alt="Confirm the following:" loading="lazy" src="assets/images/rev3/img-067.png"/></button><figcaption>Confirm the following:</figcaption></figure></div></li><li><div class="step-content">Optionally open <span class="inline-value"><span class="value">chrome://certificate-manager/</span><button class="copy-btn" data-copy="chrome://certificate-manager/">Copy</button></span> → <strong>Local certificates</strong> → <strong>View imported certificates from Windows</strong> and confirm the same trust anchor.<figure class="figure source-figure optimized-figure"><button data-caption="Verify via Google Chrome:" data-lightbox=""><img alt="Verify via Google Chrome:" loading="lazy" src="assets/images/rev3/img-068.png"/></button><figcaption>Verify via Google Chrome:</figcaption></figure><figure class="figure source-figure optimized-figure"><button data-caption="Verify via Google Chrome:" data-lightbox=""><img alt="Verify via Google Chrome:" loading="lazy" src="assets/images/rev3/img-069.png"/></button><figcaption>Verify via Google Chrome:</figcaption></figure></div></li></ol><div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep in mind</div><p>Zscaler Client Connector installs the root CA according to the app-profile settings used in this lab.</p></div></div><div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>The Zscaler Root CA is trusted by Windows/Chrome.</p></div></div></div>
+</article>
 </section>
 <section class="section pinning-primer" id="certificate-pinning-explainer">
-  <div class="section-head stacked">
-    <div class="eyebrow">Technical deep dive · before Task 5.3</div>
-    <h2>Why certificate pinning can break TLS inspection</h2>
-    <p>Certificate pinning adds an application-level trust check on top of normal certificate validation. Instead of accepting any server certificate that chains to a trusted CA, the application expects a particular certificate, public key, or approved set of pins for its back-end service.</p>
-  </div>
-
-  <div class="pinning-visual" role="img" aria-label="Certificate pinning diagram showing why a ZIA inspection certificate can be trusted by the operating system but still rejected by a pinned application, and how a targeted Do Not Inspect rule restores the original server certificate path">
-    <div class="pinning-row">
-      <div class="pinning-row-label normal">Normal TLS inspection</div>
-      <div class="pin-node"><strong>Application</strong><span>Uses normal OS trust</span></div>
-      <div class="pin-arrow"><span>TLS</span>→</div>
-      <div class="pin-node zia"><strong>ZIA inspection</strong><span>Presents a dynamically issued certificate signed by the trusted inspection CA</span></div>
-      <div class="pin-arrow">→</div>
-      <div class="pin-node success"><strong>Accepted</strong><span>Certificate chains to a trusted CA</span></div>
-    </div>
-
-    <div class="pinning-row">
-      <div class="pinning-row-label pinned">Pinned application</div>
-      <div class="pin-node"><strong>Pinned application</strong><span>Checks the expected certificate / public key pin</span></div>
-      <div class="pin-arrow"><span>TLS</span>→</div>
-      <div class="pin-node zia"><strong>ZIA inspection</strong><span>The inspection certificate is trusted by the OS, but it is not the certificate/key the app pinned</span></div>
-      <div class="pin-arrow">→</div>
-      <div class="pin-node failure"><strong>Client aborts</strong><span>Pin mismatch → TLS handshake fails</span></div>
-    </div>
-
-    <div class="pinning-row">
-      <div class="pinning-row-label bypass">Targeted bypass</div>
-      <div class="pin-node"><strong>Pinned application</strong><span>Connects through ZIA without decryption</span></div>
-      <div class="pin-arrow"><span>End-to-end TLS</span>→</div>
-      <div class="pin-node server"><strong>Original server certificate</strong><span>The application sees the certificate/key it expects</span></div>
-      <div class="pin-arrow">→</div>
-      <div class="pin-node success"><strong>Pin matches</strong><span>Connection succeeds</span></div>
-    </div>
-  </div>
-
-  <div class="grid grid-2 pinning-context-grid">
-    <article class="card pad">
-      <div class="concept-kicker">Why applications pin certificates</div>
-      <h3>Extra protection against impersonation</h3>
-      <p>Pinning is intended to make man-in-the-middle attacks harder—even if an attacker can present a certificate that the operating system would normally trust. The application performs its own additional comparison against the expected certificate or key.</p>
-      <p class="micro-note">The trade-off is operational rigidity: certificate rotation, back-end changes, or enterprise TLS interception can break the application unless the pin set or application behavior is updated.</p>
-    </article>
-
-    <article class="card pad">
-      <div class="concept-kicker accent">Why ZIA cannot simply label it “certificate pinning”</div>
-      <h3>The client does not send a pinning-specific error</h3>
-      <p>ZIA sees the client terminate or fail the TLS handshake, but the application does not send a standard message that says “certificate pinning detected.” Different clients can fail in different ways.</p>
-      <p class="micro-note">Treat handshake-failure log reasons as <strong>evidence to investigate</strong>, not as a definitive certificate-pinning signature.</p>
-    </article>
-  </div>
-
-  <div class="grid grid-2 pinning-context-grid">
-    <article class="card pad">
-      <div class="concept-kicker">How to resolve it</div>
-      <h3>Prefer the narrowest supported exception</h3>
-      <ul class="clean-list">
-        <li>Confirm that TLS inspection is the condition that triggers the application failure.</li>
-        <li>If the application/vendor supports an inspection-compatible enterprise option, prefer that supported design.</li>
-        <li>Otherwise create a <strong>targeted Do Not Inspect rule</strong> for the specific cloud application or required domains.</li>
-        <li>Avoid broad category, user, or global bypasses simply to make one pinned application work.</li>
-      </ul>
-    </article>
-
-    <article class="card pad risk-card">
-      <div class="concept-kicker purple">Security implication of bypassing</div>
-      <h3>You restore application compatibility, but lose decrypted-content visibility</h3>
-      <p>The application keeps end-to-end TLS and its pinning protection, but ZIA no longer decrypts that flow. Security controls that require inspection of the encrypted payload therefore lose that visibility for the bypassed traffic.</p>
-      <p class="micro-note"><strong>Design principle:</strong> bypass only what is necessary, document the business reason, and keep the exception as narrow as practical.</p>
-    </article>
-  </div>
-
-  <div class="callout warning compact-callout">
-    <div class="callout-symbol">!</div>
-    <div>
-      <div class="callout-title">Important troubleshooting distinction</div>
-      <p>A trusted Zscaler inspection CA does not guarantee that a pinned application will accept the connection. Normal OS trust and application-level pin validation are two different checks.</p>
-    </div>
-  </div>
+<div class="section-head stacked">
+<div class="eyebrow">Technical deep dive · before Task 5.3</div>
+<h2>Why certificate pinning can break TLS inspection</h2>
+<p>Certificate pinning adds an application-level trust check on top of normal certificate validation. Instead of accepting any server certificate that chains to a trusted CA, the application expects a particular certificate, public key, or approved set of pins for its back-end service.</p>
+</div>
+<div aria-label="Certificate pinning diagram showing why a ZIA inspection certificate can be trusted by the operating system but still rejected by a pinned application, and how a targeted Do Not Inspect rule restores the original server certificate path" class="pinning-visual" role="img">
+<div class="pinning-row">
+<div class="pinning-row-label normal">Normal TLS inspection</div>
+<div class="pin-node"><strong>Application</strong><span>Uses normal OS trust</span></div>
+<div class="pin-arrow"><span>TLS</span>→</div>
+<div class="pin-node zia"><strong>ZIA inspection</strong><span>Presents a dynamically issued certificate signed by the trusted inspection CA</span></div>
+<div class="pin-arrow">→</div>
+<div class="pin-node success"><strong>Accepted</strong><span>Certificate chains to a trusted CA</span></div>
+</div>
+<div class="pinning-row">
+<div class="pinning-row-label pinned">Pinned application</div>
+<div class="pin-node"><strong>Pinned application</strong><span>Checks the expected certificate / public key pin</span></div>
+<div class="pin-arrow"><span>TLS</span>→</div>
+<div class="pin-node zia"><strong>ZIA inspection</strong><span>The inspection certificate is trusted by the OS, but it is not the certificate/key the app pinned</span></div>
+<div class="pin-arrow">→</div>
+<div class="pin-node failure"><strong>Client aborts</strong><span>Pin mismatch → TLS handshake fails</span></div>
+</div>
+<div class="pinning-row">
+<div class="pinning-row-label bypass">Targeted bypass</div>
+<div class="pin-node"><strong>Pinned application</strong><span>Connects through ZIA without decryption</span></div>
+<div class="pin-arrow"><span>End-to-end TLS</span>→</div>
+<div class="pin-node server"><strong>Original server certificate</strong><span>The application sees the certificate/key it expects</span></div>
+<div class="pin-arrow">→</div>
+<div class="pin-node success"><strong>Pin matches</strong><span>Connection succeeds</span></div>
+</div>
+</div>
+<div class="grid grid-2 pinning-context-grid">
+<article class="card pad">
+<div class="concept-kicker">Why applications pin certificates</div>
+<h3>Extra protection against impersonation</h3>
+<p>Pinning is intended to make man-in-the-middle attacks harder—even if an attacker can present a certificate that the operating system would normally trust. The application performs its own additional comparison against the expected certificate or key.</p>
+<p class="micro-note">The trade-off is operational rigidity: certificate rotation, back-end changes, or enterprise TLS interception can break the application unless the pin set or application behavior is updated.</p>
+</article>
+<article class="card pad">
+<div class="concept-kicker accent">Why ZIA cannot simply label it “certificate pinning”</div>
+<h3>The client does not send a pinning-specific error</h3>
+<p>ZIA sees the client terminate or fail the TLS handshake, but the application does not send a standard message that says “certificate pinning detected.” Different clients can fail in different ways.</p>
+<p class="micro-note">Treat handshake-failure log reasons as <strong>evidence to investigate</strong>, not as a definitive certificate-pinning signature.</p>
+</article>
+</div>
+<div class="grid grid-2 pinning-context-grid">
+<article class="card pad">
+<div class="concept-kicker">How to resolve it</div>
+<h3>Prefer the narrowest supported exception</h3>
+<ul class="clean-list">
+<li>Confirm that TLS inspection is the condition that triggers the application failure.</li>
+<li>If the application/vendor supports an inspection-compatible enterprise option, prefer that supported design.</li>
+<li>Otherwise create a <strong>targeted Do Not Inspect rule</strong> for the specific cloud application or required domains.</li>
+<li>Avoid broad category, user, or global bypasses simply to make one pinned application work.</li>
+</ul>
+</article>
+<article class="card pad risk-card">
+<div class="concept-kicker purple">Security implication of bypassing</div>
+<h3>You restore application compatibility, but lose decrypted-content visibility</h3>
+<p>The application keeps end-to-end TLS and its pinning protection, but ZIA no longer decrypts that flow. Security controls that require inspection of the encrypted payload therefore lose that visibility for the bypassed traffic.</p>
+<p class="micro-note"><strong>Design principle:</strong> bypass only what is necessary, document the business reason, and keep the exception as narrow as practical.</p>
+</article>
+</div>
+<div class="callout warning compact-callout">
+<div class="callout-symbol">!</div>
+<div>
+<div class="callout-title">Important troubleshooting distinction</div>
+<p>A trusted Zscaler inspection CA does not guarantee that a pinned application will accept the connection. Normal OS trust and application-level pin validation are two different checks.</p>
+</div>
+</div>
 </section>
-
 <section class="task" id="task-5-3">
-  <article class="card task-shell">
-    <header class="task-head">
-      <div class="task-num">5.3</div>
-      <div>
-        <h2>Review Certificate Pinning Errors</h2>
-        <p>Reproduce a TLS-handshake failure with a certificate-pinned application, investigate the symptoms in Web Insights, then apply a targeted inspection bypass.</p>
-      </div>
-      <label class="task-complete"><input type="checkbox" data-task-check="5.3"> Mark complete</label>
-    </header>
-
-    <div class="task-body">
-      <div class="nav-path-card">
-        <div class="eyebrow">Current Experience Center navigation</div>
-        <div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div>
-        <p class="micro-note">For troubleshooting, use <strong>Search menu</strong> and search for <strong>Web Insights</strong>, then open <strong>Logs</strong>.</p>
-      </div>
-
-      <ol class="steps">
-        <li><div class="step-content">On <strong>Corp: Client PC</strong>, download Threema Private Desktop for Windows from <span class="inline-value"><span class="value">https://threema.com/en/download/threema-private</span><button class="copy-btn" data-copy="https://threema.com/en/download/threema-private">Copy</button></span>.</div></li>
-        <li><div class="step-content">Install the downloaded MSIX from PowerShell with <span class="inline-value"><span class="value">Add-AppxPackage -Path .\Downloads\threema-desktop-latest-windows-x64.msix</span><button class="copy-btn" data-copy="Add-AppxPackage -Path .\Downloads\threema-desktop-latest-windows-x64.msix">Copy</button></span><p class="micro-note">If the downloaded filename is different, substitute the actual MSIX filename.</p></div></li>
-        <li><div class="step-content"><strong>Launch Threema Private / Threema Beta after the installation completes.</strong> Installing the package alone does not generate the test condition.</div></li>
-        <li><div class="step-content">With the <strong>SSL Inspect All</strong> rule still active, wait for Threema to attempt its back-end connection. Observe the connection failure.</div></li>
-      </ol>
-
-      <div class="reference-gallery current-gallery single-feature">
-        <figure class="figure reference-figure current-reference">
-          <button data-lightbox data-caption="Example Threema connection failure while TLS inspection is active. The application launches successfully, but the back-end TLS connection does not complete.">
-            <img src="assets/images/lab05/threema-connection-error.png" alt="Threema Connection Error showing that the server connection was lost before linking completed">
-          </button>
-          <figcaption>Expected failure while inspection is active. <span>The exact client message may vary.</span></figcaption>
-        </figure>
-      </div>
-
-      <ol class="steps" start="5">
-        <li><div class="step-content">Open <strong>Web Insights → Logs</strong>. Set a recent timeframe that includes your Threema test and filter on your lab user if needed.</div></li>
-        <li><div class="step-content">Add the filter <strong>Client SSL/TLS Handshake Failure Reason</strong>. Check for one or more of these values:
-          <div class="filter-chips" aria-label="Possible client TLS handshake failure reasons">
-            <span>Unknown CA</span><span>Close Notify or Client TCP Reset</span><span>Certificate Unknown</span><span>Bad or Unsupported Certificate</span><span>Bad Record Mac</span><span>Handshake Failure</span>
-          </div>
-          <div class="callout warning inline-warning"><div class="callout-symbol">!</div><div><div class="callout-title">These are symptoms, not proof of certificate pinning</div><p>ZIA cannot directly identify certificate pinning. A pinned client can terminate the handshake in different ways, so use these values to find relevant failed TLS sessions and correlate them with the application failure.</p></div></div>
-        </div></li>
-      </ol>
-
-      <div class="reference-gallery current-gallery">
-        <figure class="figure reference-figure current-reference">
-          <button data-lightbox data-caption="Web Insights example using Client SSL/TLS Handshake Failure Reason. The log shows failed client handshakes such as Bad Record Mac and Close Notify or Client TCP Reset.">
-            <img src="assets/images/lab05/threema-client-handshake-filter.png" alt="Web Insights Logs filtered by Client SSL TLS Handshake Failure Reason for Threema traffic">
-          </button>
-          <figcaption>Filter example: <strong>Client SSL/TLS Handshake Failure Reason</strong>.</figcaption>
-        </figure>
-      </div>
-
-      <ol class="steps" start="7">
-        <li><div class="step-content">As a second view, use <strong>SSL/TLS Policy Reason</strong> and look for <span class="inline-value"><span class="value">Not inspected because of failed client SSL/TLS handshake</span><button class="copy-btn" data-copy="Not inspected because of failed client SSL/TLS handshake">Copy</button></span>.</div></li>
-      </ol>
-
-      <div class="reference-gallery current-gallery">
-        <figure class="figure reference-figure current-reference">
-          <button data-lightbox data-caption="Web Insights example using SSL/TLS Policy Reason set to Not inspected because of failed client SSL/TLS handshake.">
-            <img src="assets/images/lab05/threema-ssl-policy-reason-filter.png" alt="Web Insights Logs filtered by SSL TLS Policy Reason showing failed client SSL TLS handshake">
-          </button>
-          <figcaption>Filter example: <strong>SSL/TLS Policy Reason → Not inspected because of failed client SSL/TLS handshake</strong>.</figcaption>
-        </figure>
-      </div>
-
-      <ol class="steps" start="8">
-        <li><div class="step-content">Return to <div class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div> Add a rule at order <strong>1</strong> named <strong>Bypass Threema</strong>. Under <strong>Cloud Applications</strong>, select <strong>Instant Messaging → Threema</strong>. Set Action to <strong>Do Not Inspect</strong>, then <strong>Save</strong> and <strong>Activate</strong>.</div></li>
-        <li><div class="step-content">End any running Threema process in Task Manager, then reopen the application so it establishes a fresh TLS session.</div></li>
-        <li><div class="step-content">Confirm that Threema now connects. The targeted bypass allows the application to see its original server certificate/key instead of the ZIA-issued inspection certificate.</div></li>
-      </ol>
-
-      <div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep the exception narrow</div><p>Do not disable TLS inspection globally to solve a single pinned application. Use the smallest practical Cloud Application or domain scope and retain the business justification for the exception.</p></div></div>
-
-      <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>Threema fails while TLS inspection is active; Web Insights shows client-handshake failure symptoms that correlate with the test; after the targeted <strong>Do Not Inspect</strong> rule is activated and the app is restarted, Threema connects successfully.</p></div></div>
-    </div>
-  </article>
+<article class="card task-shell">
+<header class="task-head">
+<div class="task-num">5.3</div>
+<div>
+<h2>Review Certificate Pinning Errors</h2>
+<p>Reproduce a TLS-handshake failure with a certificate-pinned application, investigate the symptoms in Web Insights, then apply a targeted inspection bypass.</p>
+</div>
+<label class="task-complete"><input data-task-check="5.3" type="checkbox"/> Mark complete</label>
+</header>
+<div class="task-body"><div class="resource-locator"><div class="eyebrow">Experience Center · find this resource</div><p class="search-hint">Search Menu → <strong>Web Insights</strong></p></div>
+<ol class="steps">
+<li><div class="step-content">On <strong>Corp Client PC</strong>, download Threema Private Desktop for Windows from <span class="inline-value"><span class="value">https://threema.com/en/download/threema-private</span><button class="copy-btn" data-copy="https://threema.com/en/download/threema-private">Copy</button></span>.<figure class="figure source-figure optimized-figure"><button data-caption="Recreate Certificate Pinning Error:" data-lightbox=""><img alt="Recreate Certificate Pinning Error:" loading="lazy" src="assets/images/rev3/img-070.png"/></button><figcaption>Recreate Certificate Pinning Error:</figcaption></figure></div></li>
+<li><div class="step-content">Install the downloaded MSIX from PowerShell with <span class="inline-value"><span class="value">Add-AppxPackage -Path .\Downloads\threema-desktop-latest-windows-x64.msix</span><button class="copy-btn" data-copy="Add-AppxPackage -Path .\Downloads\threema-desktop-latest-windows-x64.msix">Copy</button></span><p class="micro-note">If the downloaded filename is different, substitute the actual MSIX filename.</p></div></li>
+<li><div class="step-content"><strong>Launch Threema Private / Threema Beta after the installation completes.</strong> Installing the package alone does not generate the test condition.<figure class="figure source-figure optimized-figure"><button data-caption="Recreate Certificate Pinning Error:" data-lightbox=""><img alt="Recreate Certificate Pinning Error:" loading="lazy" src="assets/images/rev3/img-071.png"/></button><figcaption>Recreate Certificate Pinning Error:</figcaption></figure></div></li>
+<li><div class="step-content">With the <strong>SSL Inspect All</strong> rule still active, wait for Threema to attempt its back-end connection. Observe the connection failure.<figure class="figure source-figure optimized-figure"><button data-caption="Recreate Certificate Pinning Error:" data-lightbox=""><img alt="Recreate Certificate Pinning Error:" loading="lazy" src="assets/images/rev3/img-073.png"/></button><figcaption>Recreate Certificate Pinning Error:</figcaption></figure></div></li>
+</ol>
+<ol class="steps" start="5">
+<li><div class="step-content">Open <strong>Web Insights → Logs</strong>. Set a recent timeframe that includes your Threema test and filter on your lab user if needed.</div></li>
+<li><div class="step-content">Add the filter <strong>Client SSL/TLS Handshake Failure Reason</strong>. Check for one or more of these values:
+          <div aria-label="Possible client TLS handshake failure reasons" class="filter-chips">
+<span>Unknown CA</span><span>Close Notify or Client TCP Reset</span><span>Certificate Unknown</span><span>Bad or Unsupported Certificate</span><span>Bad Record Mac</span><span>Handshake Failure</span>
+</div>
+<div class="callout warning inline-warning"><div class="callout-symbol">!</div><div><div class="callout-title">These are symptoms, not proof of certificate pinning</div><p>ZIA cannot directly identify certificate pinning. A pinned client can terminate the handshake in different ways, so use these values to find relevant failed TLS sessions and correlate them with the application failure.</p></div></div>
+<figure class="figure source-figure optimized-figure"><button data-caption="Configure an SSL Bypass Rule" data-lightbox=""><img alt="Configure an SSL Bypass Rule" loading="lazy" src="assets/images/rev3/img-074.png"/></button><figcaption>Configure an SSL Bypass Rule</figcaption></figure></div></li>
+</ol>
+<ol class="steps" start="7">
+<li><div class="step-content">As a second view, use <strong>SSL/TLS Policy Reason</strong> and look for <span class="inline-value"><span class="value">Not inspected because of failed client SSL/TLS handshake</span><button class="copy-btn" data-copy="Not inspected because of failed client SSL/TLS handshake">Copy</button></span>.</div></li>
+</ol>
+<ol class="steps" start="8">
+<li><div class="step-content">Return to <div aria-label="Experience Center navigation path" class="ec-nav-path" role="group"><span class="ec-nav-step">Internet Access</span><span aria-hidden="true" class="ec-nav-separator">›</span><span class="ec-nav-step">Policy</span><span aria-hidden="true" class="ec-nav-separator">›</span><span class="ec-nav-step">SSL/TLS Inspection</span></div> Add a rule at order <strong>1</strong> named <strong>Bypass Threema</strong>. Under <strong>Cloud Applications</strong>, select <strong>Instant Messaging → Threema</strong>. Set Action to <strong>Do Not Inspect</strong>, then <strong>Save</strong> and <strong>Activate</strong>.<figure class="figure source-figure optimized-figure"><button data-caption="Reattempt Installation of Threema:" data-lightbox=""><img alt="Reattempt Installation of Threema:" loading="lazy" src="assets/images/rev3/img-075.png"/></button><figcaption>Reattempt Installation of Threema:</figcaption></figure></div></li>
+<li><div class="step-content">End any running Threema process in Task Manager, then reopen the application so it establishes a fresh TLS session.<figure class="figure source-figure optimized-figure"><button data-caption="Analyze SSL Inspection and Bypass Logs" data-lightbox=""><img alt="Analyze SSL Inspection and Bypass Logs" loading="lazy" src="assets/images/rev3/img-076.png"/></button><figcaption>Analyze SSL Inspection and Bypass Logs</figcaption></figure></div></li>
+<li><div class="step-content">Confirm that Threema now connects. The targeted bypass allows the application to see its original server certificate/key instead of the ZIA-issued inspection certificate.</div></li>
+</ol>
+<div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Keep the exception narrow</div><p>Do not disable TLS inspection globally to solve a single pinned application. Use the smallest practical Cloud Application or domain scope and retain the business justification for the exception.</p></div></div>
+<div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Expected result</div><p>Threema fails while TLS inspection is active; Web Insights shows client-handshake failure symptoms that correlate with the test; after the targeted <strong>Do Not Inspect</strong> rule is activated and the app is restarted, Threema connects successfully.</p></div></div>
+</div>
+</article>
 </section>
 <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Lab 5 complete</div><p>Encrypted traffic inspected with a targeted bypass</p></div></div>
 <div class="page-nav"><a href="lab-04.html"><small>Previous</small><strong>← Lab 4</strong></a><a class="next" href="lab-06.html"><small>Next</small><strong>Lab 6 →</strong></a></div>
-<footer class="footer"><span>Unofficial EDU-200 web edition · Author: Rupak Dey · Lab 5</span><span>Source screenshots are retained as visual references; follow current written navigation.</span></footer>
-</div></main><a class="floating-logo" href="#main" aria-label="Back to top"><img src="assets/images/zscaler-logo.svg" alt="Zscaler"></a><dialog class="modal" id="image-modal"><img alt="Expanded lab screenshot"><div class="modal-bar"><span data-modal-caption></span><button class="modal-close" data-modal-close>Close</button></div></dialog><script src="assets/js/site.js"></script></body></html>
+<footer class="footer guide-footer"><span class="footer-author">Author: <strong>Rupak Dey</strong></span><span class="footer-course">Adapted EDU-200 Lab Guide · Rev 3.0</span></footer>
+</div></main><a aria-label="Back to top" class="floating-logo" href="#main"><img alt="Zscaler" src="assets/images/shared/zscaler-logo.svg"/></a><dialog class="modal" id="image-modal"><img alt="Expanded lab screenshot"/><div class="modal-bar"><span data-modal-caption=""></span><button class="modal-close" data-modal-close="">Close</button></div></dialog><script defer="" src="assets/js/course-data.js"></script><script defer="" src="assets/js/site.js"></script></body></html>
