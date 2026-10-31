@@ -454,3 +454,413 @@ p { margin:0 0 1rem; }
   .pinning-row-label { justify-content:flex-start; }
   .pin-arrow { min-height:24px; transform:rotate(90deg); }
 }
+
+
+/* EDU-202 source-instruction presentation */
+.source-instructions{display:grid;gap:8px;margin:16px 0 20px}.source-step{display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--surface-solid)}.source-step.sub{margin-left:24px;background:var(--surface-2)}.source-step.minor,.source-step.bullet{margin-left:48px;background:var(--surface-2)}.source-step.major{border-left:4px solid var(--accent)}.source-marker{display:flex;align-items:center;justify-content:center;min-height:26px;padding:2px 6px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:.72rem;font-weight:900}.source-step-text{line-height:1.55}.source-code{display:flex;align-items:center;gap:10px;margin:4px 0 4px 72px;padding:10px 12px;border:1px solid var(--border);border-radius:11px;background:var(--code-bg, var(--surface-2));overflow:auto}.source-code code{flex:1;white-space:pre-wrap;word-break:break-word}.sample-banner{display:inline-flex;align-items:center;padding:6px 10px;border:1px solid #e4c98e;border-radius:999px;background:#fff5df;color:#a85b00;font-size:.7rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase}.system-table td:first-child{font-weight:750}.credential-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.credential-card{padding:22px;border:1px solid var(--border);border-radius:18px;background:var(--surface-solid)}.credential-card .value-row{display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid var(--border)}.credential-card .value-row:last-child{border-bottom:0}.credential-card code{font-size:.82rem}.section-head.stacked p{max-width:1120px}.source-route-note{font-size:.78rem;color:var(--muted);margin-top:8px}.intro-note{max-width:1080px}.sdc-summary-card{border-left:4px solid var(--accent)}
+@media(max-width:900px){.credential-grid{grid-template-columns:1fr}.source-step.sub,.source-step.minor,.source-step.bullet{margin-left:0}.source-code{margin-left:0}}
+
+/* v6: screenshot sizing policy
+   - Never let a lab/content image exceed 2/3 of the guide's 1680px max page width.
+   - Never upscale an image beyond its intrinsic/native dimensions.
+   - Continue shrinking images responsively when the available column/viewport is smaller. */
+:root {
+  --guide-image-max-width: 1120px;
+}
+
+.figure {
+  width: fit-content;
+  max-width: min(100%, var(--guide-image-max-width));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.figure > button,
+.sipa-flow-figure > button,
+.concept-figure > button {
+  width: fit-content !important;
+  max-width: 100% !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.figure img,
+.reference-figure img,
+.media-grid .figure img,
+.sipa-flow-figure img,
+.concept-figure img,
+.zpa-concept-figure img,
+.access-example img {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* A gallery cell can remain full-width for alignment, while the screenshot
+   inside it stays native-sized and centered. */
+.reference-gallery .figure {
+  width: 100%;
+  max-width: 100%;
+}
+
+.reference-gallery .figure > button {
+  width: fit-content !important;
+  max-width: min(100%, var(--guide-image-max-width)) !important;
+}
+
+
+/* EDU-202 v7: Browser Access and PRA concept explainers */
+.browser-access-flow,
+.pra-flow {
+  display:grid;
+  grid-template-columns:minmax(150px,1fr) 32px minmax(190px,1.15fr) 32px minmax(190px,1.15fr) 32px minmax(160px,1fr);
+  gap:10px;
+  align-items:stretch;
+  margin:18px 0 22px;
+}
+.pra-flow {
+  grid-template-columns:minmax(135px,.9fr) 28px minmax(160px,1fr) 28px minmax(170px,1fr) 28px minmax(175px,1.05fr) 28px minmax(145px,.9fr);
+}
+.concept-node {
+  position:relative;
+  min-height:112px;
+  padding:18px 14px 14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--surface-solid);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+}
+.concept-node strong { font-size:.94rem; }
+.concept-node small { color:var(--muted); font-size:.75rem; line-height:1.45; margin-top:6px; }
+.concept-step {
+  position:absolute;
+  top:8px; left:10px;
+  width:23px; height:23px;
+  display:grid; place-items:center;
+  border-radius:8px;
+  background:var(--accent-soft);
+  color:var(--accent);
+  font-size:.68rem; font-weight:900;
+}
+.accent-node { border-color:color-mix(in srgb,var(--success) 38%,var(--border)); background:linear-gradient(145deg,var(--success-soft),var(--surface-solid)); }
+.portal-node { border-color:color-mix(in srgb,var(--accent) 34%,var(--border)); background:linear-gradient(145deg,var(--accent-soft),var(--surface-solid)); }
+.concept-arrow { display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:1.35rem; font-weight:900; }
+.cert-head { margin-top:28px; }
+.certificate-choice-grid { margin-top:12px; }
+.cert-card { position:relative; overflow:hidden; }
+.managed-cert { border-top:3px solid var(--success); }
+.custom-cert { border-top:3px solid #a985ff; }
+.pra-core-grid { margin-top:18px; }
+.pra-policy-strip {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0;
+}
+.policy-chip {
+  padding:14px 15px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--surface-2);
+}
+.policy-chip strong { display:block; color:var(--text); font-size:.84rem; margin-bottom:4px; }
+.policy-chip span { display:block; color:var(--muted); font-size:.75rem; line-height:1.4; }
+@media (max-width:1250px) {
+  .browser-access-flow,.pra-flow { grid-template-columns:1fr; }
+  .concept-arrow { min-height:22px; transform:rotate(90deg); }
+  .pra-policy-strip { grid-template-columns:1fr; }
+}
+
+/* EDU-202 v8: ZPA AppProtection technical explainer */
+.appprotection-primer .section-head p { max-width:1180px; }
+.appprotection-compare { margin-top:16px; }
+.zia-card { border-top:3px solid var(--accent); }
+.zpa-card { border-top:3px solid var(--success); }
+.appprotection-flow {
+  display:grid;
+  grid-template-columns:minmax(145px,.9fr) 28px minmax(155px,1fr) 28px minmax(175px,1.08fr) 28px minmax(190px,1.15fr) 28px minmax(145px,.9fr);
+  gap:10px;
+  align-items:stretch;
+  margin:20px 0 22px;
+}
+.appprotection-core-grid,
+.appprotection-threat-grid { margin-top:18px; }
+.threat-chips { display:flex; flex-wrap:wrap; gap:7px; margin:12px 0 8px; }
+.threat-chips span {
+  display:inline-flex; align-items:center;
+  padding:6px 9px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--surface-2);
+  font-size:.73rem;
+  font-weight:750;
+}
+.paranoia-card { margin-top:18px; }
+.paranoia-scale {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:16px 0 12px;
+}
+.paranoia-level {
+  min-height:112px;
+  padding:14px 12px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--surface-2);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+}
+.paranoia-level strong { color:var(--accent); font-size:1.12rem; }
+.paranoia-level span { font-weight:850; margin-top:3px; }
+.paranoia-level small { color:var(--muted); line-height:1.4; margin-top:5px; }
+.paranoia-level.pl3 { border-color:color-mix(in srgb,var(--success) 42%,var(--border)); background:linear-gradient(145deg,var(--success-soft),var(--surface-2)); }
+.paranoia-level.pl4 { border-color:color-mix(in srgb,#a985ff 32%,var(--border)); }
+.dns-context-block {
+  margin:22px 0;
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:linear-gradient(145deg,var(--surface-2),var(--surface-solid));
+}
+.compact-subhead { margin-bottom:14px; }
+.compact-subhead h3 { margin:4px 0 8px; font-size:1.35rem; }
+.dns-flow-figure { margin:18px auto 20px; }
+@media (max-width:1250px) {
+  .appprotection-flow { grid-template-columns:1fr; }
+  .appprotection-flow .concept-arrow { transform:rotate(90deg); min-height:22px; }
+  .paranoia-scale { grid-template-columns:1fr 1fr; }
+}
+@media (max-width:760px) {
+  .paranoia-scale { grid-template-columns:1fr; }
+  .dns-context-block { padding:14px; }
+}
+
+/* v9: lab subtitle width + consistent Experience Center search guidance */
+.lab-hero > div { min-width: 0; grid-column: 1 / -1; }
+.lab-hero p { max-width: none; width: 100%; }
+
+.search-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+  padding: 5px 9px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--muted);
+  font-size: .76rem;
+  line-height: 1.25;
+}
+.search-hint strong { color: var(--text); }
+
+/* v10: normal explanatory text under stacked section headings uses full width */
+.section-head.stacked > p {
+  max-width: none !important;
+  width: 100%;
+}
+
+
+/* Reusable guide refinement: proportional screenshots + full-width topologies.
+   Both the width and height limits are applied; never force width/height
+   to fixed values, so the source aspect ratio and native detail are preserved. */
+:root {
+  --guide-image-max-height: 1490px;
+}
+.figure:not(.topology-figure) img,
+.reference-figure img,
+.media-grid .figure:not(.topology-figure) img,
+.sipa-flow-figure img,
+.concept-figure img,
+.zpa-concept-figure img,
+.access-example img {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: min(var(--guide-image-max-height), 80vh) !important;
+  object-fit: contain;
+}
+/* A network topology is a technical diagram, not a typical UI screenshot.
+   Permit full guide width but never upscale raster diagrams. */
+.figure.topology-figure {
+  width: 100%;
+  max-width: 100%;
+}
+.figure.topology-figure > button {
+  width: fit-content !important;
+  max-width: 100% !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+.figure.topology-figure img {
+  display: block;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  margin: 0 auto;
+  object-fit: contain;
+}
+.resource-locator {
+  margin: 14px 0 19px;
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  font-size: .89rem;
+}
+.resource-locator p { margin: 5px 0; }
+.resource-locator .search-hint { margin: 7px 0 3px; }
+.resource-locator .source-route-note { line-height: 1.5; }
+/* Credentials/access inventory immediately below source topology. */
+.vm-access-table { margin: 12px 0 20px; }
+.vm-access-table code { overflow-wrap: anywhere; }
+.vm-access-table-wrap { overflow-x: auto; }
+@media (max-width: 760px) {
+  .vm-access-table { font-size: .8rem; }
+}
+
+/* Theme-matched topology diagrams: display only the appropriate SVG, including
+   in the lightbox (each image has its own existing data-lightbox button). */
+.figure.topology-figure.theme-topology > button.theme-topology-light { display: block; }
+.figure.topology-figure.theme-topology > button.theme-topology-dark { display: none; }
+html[data-theme="dark"] .figure.topology-figure.theme-topology > button.theme-topology-light { display: none; }
+html[data-theme="dark"] .figure.topology-figure.theme-topology > button.theme-topology-dark { display: block; }
+
+/* Reusable two-field footer: author left, adapted course label right. */
+.guide-footer { align-items: baseline; }
+.guide-footer .footer-author { text-align: left; }
+.guide-footer .footer-course { text-align: right; margin-left: auto; }
+@media (max-width: 680px) {
+  .guide-footer { flex-direction: column; gap: 5px; }
+  .guide-footer .footer-course { margin-left: 0; text-align: left; }
+}
+
+/* Experience Center navigation breadcrumbs: use ONLY for verified menu paths.
+   The labels remain readable in both themes; long paths scroll horizontally. */
+.ec-nav-path {
+  --ec-nav-bg: #eaf1ff;
+  --ec-nav-border: #afc9fb;
+  --ec-nav-ink: #0b4cc3;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 7px 1px;
+  margin: 3px 0;
+  vertical-align: middle;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ec-nav-border) transparent;
+}
+.ec-nav-step {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--ec-nav-border);
+  border-radius: 12px;
+  padding: 7px 12px;
+  background: var(--ec-nav-bg);
+  color: var(--ec-nav-ink);
+  font-weight: 750;
+  font-size: .92rem;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.ec-nav-separator {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 1.45rem;
+  font-weight: 750;
+  line-height: 1;
+  user-select: none;
+}
+[data-theme="dark"] .ec-nav-path {
+  --ec-nav-bg: #172c4d;
+  --ec-nav-border: #4d78bd;
+  --ec-nav-ink: #a9ccff;
+}
+/* Keep breadcrumbs visually separated from the accompanying Search Menu
+   and documentation references; don't turn other arrows into pills. */
+.resource-locator .ec-nav-path { margin: 8px 0 7px; }
+@media (max-width: 760px) {
+  .ec-nav-path { gap: 7px; }
+  .ec-nav-step { padding: 7px 10px; border-radius: 10px; font-size: .83rem; }
+}
+
+/* EDU-200 Rev 3.0 structured source instructions */
+.rev3-source-steps { margin: 12px 0 24px; }
+.rev3-steps .step-content { max-width: none; width: 100%; }
+.rev3-steps .step-content > p { margin: 0 0 10px; max-width: none; }
+.rev3-steps .step-content > p.step-main { font-weight: 650; }
+.compact-substeps { margin: 7px 0 13px; padding-left: 20px; line-height: 1.65; }
+.compact-substeps li { margin: 5px 0; padding-left: 2px; }
+.rev3-settings { margin: 10px 0 14px; max-width: 100%; }
+.source-figure { width: fit-content; max-width: 66.667%; margin: 15px 0 19px; }
+.source-figure button { display: block; width: fit-content; max-width: 100%; }
+.source-figure img { display: block; width: auto; height: auto; max-width: 100%; max-height: min(1490px, 80vh); object-fit: contain; }
+.source-figure figcaption { font-size: .82rem; color: var(--muted); margin-top: 6px; }
+.source-version-note { margin: 8px 0 18px; }
+@media(max-width: 740px) { .source-figure { max-width: 100%; } }
+
+/* Rev 3.0 editorial optimization: screenshots follow individual steps. */
+.optimized-figure { margin: 13px 0 17px; max-width: min(100%, 1120px); }
+.optimized-figure img {display:block; width:auto; height:auto; max-width:100%; max-height:min(1490px,80vh); object-fit:contain;}
+.optimized-figure figcaption {font-size:.82rem; margin-top:7px;}
+.inline-search-menu {display:inline-block; padding:2px 6px; background:var(--surface-solid, #f3f6fb); border-radius:6px;}
+.command-block {display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:9px 0;padding:10px 14px;background:var(--surface-solid,#f6f7fa);border:1px solid var(--border,#d9e1ea);border-radius:10px;}
+.command-block code {font-size:.9rem;overflow-wrap:anywhere; flex:1;}
+.command-block .copy-btn{flex:none;}
+/* Style both new Experience Center paths and legacy inline labels consistently. */
+.step-content > .ec-nav-path {margin:8px 0 12px;}
+
+/* EDU-200 Rev 3: TECHNICAL CONCEPT DIAGRAMS, not lab screenshots.
+   Vector explainers use the full content column; native-resolution screenshots
+   continue to use the existing <= 2/3-width and viewport-height limits.
+   The existing [data-lightbox] button remains clickable to enlarge. */
+.figure.technical-diagram {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 20px 0 24px;
+}
+.figure.technical-diagram > button {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  cursor: zoom-in;
+}
+.figure.technical-diagram img {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain;
+  margin: 0 auto;
+}
+/* Credential references are tall screenshots, not diagrams. Keep them legible
+   in-page but uncropped, and let learners enlarge them in the lightbox. */
+.figure.credentials-reference-figure {
+  width: fit-content;
+  max-width: min(100%, 900px);
+  margin: 18px auto;
+}
+.figure.credentials-reference-figure img {
+  display: block;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: min(1000px, 85vh) !important;
+  object-fit: contain;
+}
