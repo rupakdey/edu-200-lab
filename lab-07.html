@@ -6,8 +6,33 @@
 <div class="topbar-actions"><div class="global-search"><input aria-label="Search course" id="global-search-input" placeholder="Search labs or tasks…" type="search"/><div class="global-search-results" id="global-search-results"></div></div><button aria-label="Toggle dark or light mode" class="icon-btn" data-theme-toggle=""><span data-theme-icon="">☾</span></button></div>
 </header>
 <main class="main" id="main"><div class="content">
-<section class="lab-hero"><div><div class="eyebrow">Lab 7</div><h1>Configure DNS Security</h1><p>Steer DNS through Zscaler, create DNS policy, and verify enforcement in DNS insights.</p><div class="lab-facts"><span class="fact"><strong>Time:</strong> ~20 minutes</span><span class="fact"><strong>Tasks:</strong> 3</span><span class="fact"><strong>Outcome:</strong> Gambling DNS requests blocked and logged</span></div></div></section>
-<div class="callout info"><div class="callout-symbol">i</div><div><div class="callout-title">Use your assigned tenant</div><p>Use the Student ID, Student FQDN, session password, and CloudShare link from <strong>your own lab-access email</strong>. Values shown in examples and screenshots are not your live credentials.</p></div></div>
+<section class="lab-hero"><div><div class="eyebrow">Lab 7</div><h1>Configure DNS Security</h1><p>Steer DNS through Zscaler, create DNS policy, and verify enforcement in DNS insights.</p><div class="lab-facts"><span class="fact"><strong>Time:</strong> ~20 minutes</span><span class="fact"><strong>Tasks:</strong> 3</span><span class="fact"><strong>Outcome:</strong> Gambling DNS requests blocked and logged</span></div></div></section><section class="section concept-primer dns-primer" id="dns-processing-explainer">
+<div class="section-head stacked"><div class="eyebrow">Technical context · ZCC DNS processing</div><h2>Why DNS must reach Zscaler before a DNS policy can work</h2><p>DNS normally translates a domain name into an IP address before the connection begins. Blocking risky or prohibited domains at this stage can prevent an unwanted connection early—but only when the DNS request is sent through the policy enforcement path.</p></div>
+<div class="card pad">
+<h3>How Zscaler Client Connector chooses a DNS path</h3>
+<p>For a Windows App Profile using <strong>Z-Tunnel 2.0</strong>, ZCC evaluates several conditions, not just the domain name. Depending on the private application definition, DNS resolver exclusions, and Domain Inclusion/Exclusion configuration, the request may be handled through ZPA, ZIA, or a device/network DNS resolver.</p>
+<table class="credentials settings-table"><thead><tr><th>Situation</th><th>Result</th></tr></thead><tbody>
+<tr><td><strong>ZPA private application</strong></td><td>Matching private application domains are handled by ZCC/ZPA; the application may receive a synthetic IP address.</td></tr>
+<tr><td><strong>DNS request eligible for ZIA steering</strong></td><td>The query is tunneled to a ZIA Service Edge, where the configured DNS Control policy can apply.</td></tr>
+<tr><td><strong>DNS server excluded from Z-Tunnel 2.0</strong></td><td>ZCC evaluates the App Profile's Domain Inclusion/Exclusion rules; effective exclusions or no inclusion match use the device/network DNS resolver.</td></tr>
+</tbody></table>
+<p class="micro-note">Domain-rule precedence, IPv4/IPv6 DNS server exclusions, and the assigned ZCC/App Profile version can affect the final decision. The diagram shows the general decision logic rather than every implementation edge case.</p>
+</div>
+<figure class="figure technical-diagram theme-topology dns-theme-figure">
+<button class="theme-topology-light" data-caption="Zscaler Client Connector DNS decision flow · light theme" data-lightbox=""><img alt="DNS decision flow showing ZPA private application, ZIA tunneled DNS, and local DNS outcomes" src="assets/images/course/ZCC-DNS-Professional-Light.svg"/></button>
+<button class="theme-topology-dark" data-caption="Zscaler Client Connector DNS decision flow · dark theme" data-lightbox=""><img alt="Dark theme diagram of the ZCC DNS decision flow" src="assets/images/course/ZCC-DNS-Professional-Dark.svg"/></button>
+<figcaption>DNS processing decisions — follow the appropriate path for ZPA private apps, tunneled ZIA DNS, or local DNS. Select the diagram to enlarge.</figcaption>
+</figure>
+<div class="card pad"><h3>What the next three tasks demonstrate</h3>
+<table class="credentials settings-table"><thead><tr><th>Task</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><strong>7.1 · Steer DNS</strong></td><td>Add the wildcard <code>*</code> to <strong>Domain Inclusion</strong>, directing eligible DNS requests through Z-Tunnel 2.0 toward ZIA.</td></tr>
+<tr><td><strong>7.2 · Enforce DNS policy</strong></td><td>Create the <strong>Block Gambling</strong> DNS Control rule to restrict lookups for that category.</td></tr>
+<tr><td><strong>7.3 · Verify enforcement</strong></td><td>Use <strong>DNS Insights</strong> to confirm that the requests reached Zscaler and matched the intended rule.</td></tr>
+</tbody></table>
+<p><strong>Key distinction:</strong> ZCC decides where eligible DNS requests are sent; ZIA enforces the DNS Control policy on requests that reach it. Adding <code>*</code> does not override private application handling or every DNS exclusion.</p>
+<p class="micro-note">Official references: <a href="https://help.zscaler.com/zscaler-client-connector/configuring-zscaler-client-connector-app-profiles" rel="noopener noreferrer" target="_blank">ZCC App Profiles</a> · <a href="https://help.zscaler.com/zia/best-practices-dns-control-rules" rel="noopener noreferrer" target="_blank">DNS Control policy guidance</a>.</p>
+</div></section>
+
 <section class="task" id="task-7-1">
 <article class="card task-shell">
 <header class="task-head"><div class="task-num">7.1</div><div><h2>Configure App Profile</h2><p>Update the existing Windows app profile so all DNS domains are included for Zscaler DNS steering.</p></div><label class="task-complete"><input data-task-check="7.1" type="checkbox"/> Mark complete</label></header>
