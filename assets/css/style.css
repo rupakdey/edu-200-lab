@@ -864,3 +864,18 @@ html[data-theme="dark"] .figure.topology-figure.theme-topology > button.theme-to
   max-height: min(1000px, 85vh) !important;
   object-fit: contain;
 }
+
+/* EDU-200 Lab 7: full-width, theme-specific technical DNS diagram.
+   Ordinary screenshots retain their 2/3 width and viewport-height limits. */
+.figure.technical-diagram.theme-topology { width:100% !important; max-width:100% !important; }
+.figure.technical-diagram.theme-topology > button { width:100% !important; max-width:100% !important; }
+.figure.technical-diagram.theme-topology > button.theme-topology-light { display:block !important; }
+.figure.technical-diagram.theme-topology > button.theme-topology-dark { display:none !important; }
+html[data-theme="dark"] .figure.technical-diagram.theme-topology > button.theme-topology-light { display:none !important; }
+html[data-theme="dark"] .figure.technical-diagram.theme-topology > button.theme-topology-dark { display:block !important; }
+.figure.technical-diagram.theme-topology img { width:100% !important; max-width:100% !important; height:auto !important; max-height:none !important; object-fit:contain; }
+.concept-note p { margin: 0 0 10px; }
+.concept-note figure { margin:14px 0 5px; }
+.zpa-access-primer h3, .dns-primer h3 { margin: 20px 0 8px; }
+.zpa-access-primer .settings-table, .dns-primer .settings-table { margin: 10px 0 18px; width:100%; }
+.zpa-access-primer .card > p, .dns-primer .card > p { max-width:none; }
