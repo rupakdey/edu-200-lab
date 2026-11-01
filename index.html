@@ -29,7 +29,7 @@
 <h1>EDU-200 Hands-on Lab Guide</h1>
 <p>Updated from the October 2026 Rev 3.0 Administrator hands-on lab: sixteen labs covering ZIA, ZPA, Client Connector, DLP, SIPA, and ZDX.</p>
 <div class="author-line">Web edition by <strong>Rupak Dey</strong></div>
-<div class="hero-meta"><span>Source revision: October 2026 · 3.0</span><span>16 labs</span><span>Current Experience Center navigation</span><span>Persistent chapter navigation</span><span>Light + dark mode</span></div>
+<div class="hero-meta"><span>Source revision: October 2026 · 3.0</span><span>16 labs</span><span>Light + dark mode</span></div>
 </section>
 <div class="callout warning unofficial-note"><div class="callout-symbol">!</div><div><div class="callout-title">Unofficial learning aid</div><p>This is an independent, simplified web adaptation created to make the hands-on labs easier to follow. It is <strong>not an official Zscaler lab guide</strong>. If the live tenant, instructor guidance, or current product UI differs from this site, follow the live environment.</p></div></div>
 <section class="section">
@@ -41,44 +41,47 @@
 </div>
 </section>
 <section class="section" id="navigation-guide">
-<div class="section-head stacked"><div class="eyebrow">Experience Center navigation</div><h2>Use the new navigation throughout this web guide</h2><p>The menu structure is changing; the policy and resource configuration itself is not.</p></div>
+<div class="section-head stacked"><div class="eyebrow">Experience Center navigation</div><h2>Use the new navigation throughout this web guide</h2><p>Use the new Experience Center menu paths and Search Menu keywords throughout this guide.</p></div>
 <div class="card pad">
-<div class="callout info" style="margin-top:0"><div class="callout-symbol">i</div><div><div class="callout-title">Navigation transition</div><p>The Experience Center currently allows users to switch between <strong>Original</strong> and <strong>New</strong> navigation from <strong>Account Settings</strong>. The original navigation option is scheduled to be removed after <strong>1:00 AM UTC on October 29, 2026</strong>. This web guide therefore uses the <strong>New</strong> navigation paths.</p></div></div>
+<div class="callout info" style="margin-top:0"><div class="callout-symbol">i</div><div><div class="callout-title">Navigation transition</div><p>The <strong>Original Navigation Experience</strong> will no longer be available after <strong>1:00 AM UTC on November 5, 2026</strong>. This guide follows the <strong>New Navigation Experience</strong>. Before that deadline, if your tenant still shows the original layout, open <strong>Account Settings → New Navigation Experience</strong> and select <strong>New</strong>. After the deadline, the option to switch back will be removed.</p></div></div>
 <div class="grid grid-2 media-grid">
 <figure class="figure" style="margin:0">
 <button data-caption="New Experience Center navigation. Internet Access opens a service-specific menu with Dashboard, Policy, Resources, Tools, Settings, and Partner Integrations." data-lightbox=""><img alt="Experience Center showing the new Internet Access navigation" src="assets/images/shared/new-navigation.png"/></button>
 <figcaption>New Experience Center navigation used by this guide.</figcaption>
 </figure>
 <figure class="figure" style="margin:0">
-<button data-caption="Account Settings includes the New Navigation Experience selector. Original and New can be selected until the original option is retired." data-lightbox=""><img alt="Account Settings showing Original and New navigation options" src="assets/images/shared/account-settings-navigation.png"/></button>
-<figcaption>Until retirement, switch navigation under <strong>Account Settings → New Navigation Experience</strong>.</figcaption>
+<button data-caption="Account Settings notice: switching back to Original navigation ends at 1:00 AM UTC on November 5, 2026." data-lightbox=""><img alt="Account Settings showing Original and New navigation options" src="assets/images/shared/account-settings-navigation.png"/></button>
+<figcaption>Account Settings shows the navigation transition notice. The <strong>New</strong> experience is used throughout this guide.</figcaption>
 </figure>
 </div>
 <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">What changes — and what does not</div><p><strong>Only the menu/navigation structure changes.</strong> The actual firewall, SSL/TLS, DNS, URL filtering, resource, and other policy configuration remains the same in both navigation modes.</p></div></div>
 <div class="grid grid-2 route-grid">
 <div class="route-example">
 <strong>Firewall Filtering</strong>
-<div aria-label="Old path" class="route old"><span>Policies</span><i>›</i><span>Access Control</span><i>›</i><span>Firewall</span><i>›</i><span>Firewall Filtering Policy</span></div>
+
 <div aria-label="Current path" class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>Firewall Control</span></div>
 </div>
 <div class="route-example">
 <strong>SSL/TLS Inspection</strong>
-<div aria-label="Old path" class="route old"><span>Policies</span><i>›</i><span>Common Configuration</span><i>›</i><span>SSL/TLS</span><i>›</i><span>Inspection</span><i>›</i><span>SSL/TLS Inspection Policy</span></div>
+
 <div aria-label="Current path" class="route new"><span>Internet Access</span><i>›</i><span>Policy</span><i>›</i><span>SSL/TLS Inspection</span></div>
 </div>
 </div>
-<p class="micro-note">Legacy screenshots may still show the original menus. When that happens, follow the written path in this web guide.</p>
+<p class="micro-note">Source screenshots may show older menu labels. Follow the highlighted <strong>New Navigation Experience</strong> paths or use the Search Menu keywords provided in each task.</p>
 </div>
 </section>
 <section class="section">
 <div class="section-head stacked"><div class="eyebrow">Lab foundation</div><h2>Environment at a glance</h2><p>The lab connects a CloudShare-hosted Corp Client PC to the Zero Trust Exchange and a corporate data center. The Rev 3.0 setup section still contains an older Skytap reference; follow the CloudShare instructions in Lab 1 and your session access details.</p></div>
 <figure class="figure topology-figure theme-topology"><button class="theme-topology-light" data-caption="EDU-200 lab topology · light theme" data-lightbox=""><img alt="EDU-200 Rev 3.0 network topology (light theme)" src="assets/images/rev3/edu200-topology-light.svg"/></button><button class="theme-topology-dark" data-caption="EDU-200 lab topology · dark theme" data-lightbox=""><img alt="EDU-200 Rev 3.0 network topology (dark theme)" src="assets/images/rev3/edu200-topology-dark.svg"/></button><figcaption>Rev 3.0 logical topology · choose any node to enlarge</figcaption></figure><h3>Lab VM access (as documented in Rev 3.0)</h3><div class="vm-access-table-wrap"><table class="credentials settings-table vm-access-table"><thead><tr><th>VM</th><th>Username</th><th>Password</th><th>Address / note</th></tr></thead><tbody><tr><td>Corp Client PC</td><td>student</td><td>Admin-123!</td><td>192.168.1.1</td></tr><tr><td>Corp Win Svr 2025</td><td>administrator</td><td>Admin-123!</td><td>10.0.0.0/24 (network shown in source)</td></tr><tr><td>Corp App Connector</td><td>admin</td><td>Zscaler1!</td><td>10.0.0.4 · RHEL 9.4</td></tr></tbody></table></div><p class="micro-note">Joe and Bev use the lab-provided user credentials; tenant administrator credentials and SDC access details are specific to your assigned session.</p></section>
 <section class="section" id="session-access">
-<div class="section-head stacked session-head"><div class="eyebrow">Your session</div><h2>Two things are unique to you: the tenant and the CloudShare pod</h2><p>Your access email contains both. These values are temporary and are valid only for the duration of the training session.</p></div>
+<div class="section-head stacked session-head"><div class="eyebrow">Your session</div><h2>Access your lab tenant through CloudShare</h2><p>Use the CloudShare environment assigned for your training session. Once signed in, open <strong>Credentials</strong> to find your Zscaler tenant and SDC accounts. No separate lab-credentials email is sent.</p></div>
+<div class="callout warning" role="note" style="margin:0 0 18px">
+<div class="callout-symbol">!</div><div><div class="callout-title">CloudShare requires your corporate email address</div>
+<p>Sign in with your <strong>corporate/work email address</strong>. Free personal email accounts such as <strong>Gmail</strong> or <strong>Yahoo</strong> are <strong>not accepted</strong>. After login, select <strong>Credentials</strong> in CloudShare for your Zscaler tenant and SDC login details.</p></div></div>
 <div class="grid grid-2 access-grid">
 <div class="card pad">
 <div class="feature-icon">ZS</div>
-<div class="sample-badge">Sample only — not your live credentials</div><h3>Sample Zscaler tenant information</h3><p>Each participant receives a <strong>unique Zscaler tenant</strong> with administrator access for the session. The values below are only an example. <strong>Check your lab-access email for the Student ID, tenant/FQDN, username, password, and URLs assigned to you.</strong></p>
+<div class="sample-badge">Sample only — not your live credentials</div><h3>Sample Zscaler tenant information</h3><p>Each participant has a <strong>session-specific Zscaler tenant</strong>. The values below are examples only. After you sign in to CloudShare, open the <strong>Credentials</strong> panel to find your assigned tenant/FQDN, administrator username, password, and portal details.</p>
 <table class="credentials">
 <tbody>
 <tr><td>Example Student ID</td><td><span class="value">zs000578</span></td></tr>
@@ -87,18 +90,18 @@
 <tr><td>Admin Console</td><td><span class="value">console.zscaler.com</span></td></tr>
 </tbody>
 </table>
-<div class="callout warning compact-callout"><div class="callout-symbol">!</div><div><div class="callout-title">Do not copy the sample values</div><p>The sample Student ID <strong>zs000578</strong> and related values shown here are not your lab account. Use the credentials from <strong>your own email</strong>.</p></div></div>
+<div class="callout warning compact-callout"><div class="callout-symbol">!</div><div><div class="callout-title">Do not copy the sample values</div><p>The sample Student ID <strong>zs000578</strong> and related values are not your lab account. Use the values displayed under <strong>CloudShare → Credentials</strong> for your assigned environment.</p></div></div>
 </div>
 <div class="card pad">
 <div class="feature-icon">VM</div>
 <h3>Your CloudShare pod</h3>
-<p>Each participant also receives a <strong>unique CloudShare link</strong>. It gives you access to the virtual machines used in the hands-on labs and expires with the session.</p>
+<p>Open the <strong>CloudShare lab URL provided for your session</strong> and sign in with your corporate email address. CloudShare provides access to the virtual machines and session credentials used throughout the course.</p>
 <ul class="clean-list">
 <li><strong>Corp Client PC</strong> — learner workstation</li>
 <li><strong>Corp Win Svr 2025</strong> — directory, DNS, and internal services</li>
 <li><strong>Corp ZPA Connector</strong> — ZPA connector VM</li>
 </ul>
-<p class="micro-note">Keep your assigned CloudShare access information available during the course; it is the authoritative source for your training URL and tenant credentials.</p>
+<p class="micro-note">Your session URL is provided with the classroom access instructions. Your assigned <strong>tenant and SDC credentials</strong> are available inside the CloudShare <strong>Credentials</strong> panel after login.</p>
 </div>
 </div>
 <figure class="figure access-example credentials-reference-figure">
@@ -112,7 +115,7 @@
 <div>
 <h3>What changes at Lab 14</h3>
 <p>Labs <strong>14, 15, and 16</strong> use a separate, pre-configured <strong>Solutions Demo Center (SDC)</strong> tenant. Learners do not build the configuration there; the goal is to <strong>view, verify, and investigate</strong> existing data and settings.</p>
-<p>The SDC credentials are included in the same access email. In most tasks you only need the <strong>Admin Username</strong> and <strong>Password</strong>. The first sign-in may also require <strong>2FA enrollment</strong>.</p>
+<p>Find the SDC credentials under <strong>CloudShare → Credentials</strong>. For Labs 14–16, you generally use the SDC <strong>Admin Username</strong> and <strong>Password</strong>; the first sign-in may also require <strong>2FA enrollment</strong>.</p>
 </div>
 <a class="primary-link" href="sdc-access.html">Open the SDC access checkpoint →</a>
 </div>

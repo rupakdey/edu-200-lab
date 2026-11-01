@@ -1,0 +1,14 @@
+{
+  "base_archive": "EDU-200-Rev3-Optimized-Updated-Complete.zip",
+  "changed_files": [
+    "index.html",
+    "sdc-access.html",
+    "lab-01.html",
+    "assets/images/shared/account-settings-navigation.png"
+  ],
+  "html_pages_checked": 19,
+  "broken_local_references": 0,
+  "original_navigation_deadline": "2026-11-05 01:00 UTC",
+  "credential_source": "CloudShare \u2192 Credentials",
+  "cloudshare_login": "Corporate/work email required; Gmail/Yahoo not accepted"
+}
