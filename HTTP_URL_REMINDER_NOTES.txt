@@ -1,0 +1,16 @@
+EDU-200 Rev 3.0 — HTTP URL reminder correction
+
+Updated pages: lab-10.html and lab-11.html only.
+
+A prominent warning was added directly to four browser-validation steps:
+- Task 10.1: Test wildcard Discovery access on the intranet site.
+- Task 10.2: Test dedicated Intranet access as Student.
+- Task 11.1: Reproduce Joe’s initial intranet access failure.
+- Task 11.2: Retest intranet access as Joe after fixing ZPA entitlement and Allow Intranet access policy.
+
+Each warning explains that this lab uses http://intranet.patraining.safemarch.com on TCP 80. An automatic browser upgrade to HTTPS (TCP 443) can lead to misleading test failures.
+
+The previously approved Lab 11 correction adding Joe to the existing Allow Intranet rule is retained.
+No CSS or JavaScript changes are required; these notices use the existing callout.warning style.
+
+Install: Upload/replace lab-10.html and lab-11.html in the EDU-200 web repository root.
