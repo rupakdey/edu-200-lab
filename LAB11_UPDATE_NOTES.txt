@@ -1,0 +1,6 @@
+EDU-200 Rev 3.0 – Lab 11 correction
+
+Replace lab-11.html at the web guide root.
+Task 11.1 now identifies two required authorizations. Task 11.2 adds an explicit step before the final browser test to edit the existing Allow Intranet access rule, retain Student, and permit Joe as an OR/Any alternative under loginname.
+Also updates expected result and adds the relevant Zscaler Help link.
+All other files remain unchanged.
