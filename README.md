@@ -10,4 +10,3 @@ The guide includes 16 labs, a dedicated Solutions Demo Center access checkpoint 
 
 For changes relative to the prior web version, see `REV3_CHANGELOG.md`. For generated-file checks, see `REV3_BUILD_REPORT.json`.
 
-**Confidentiality:** Source material is marked **ZSCALER CONFIDENTIAL INFORMATION**. Keep this derivative private unless explicitly authorized for publication.
