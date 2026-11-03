@@ -1,0 +1,45 @@
+{
+  "lab-02.html": [
+    "P1: instructor-provided CloudShare URL and Credentials wording",
+    "P2: SyncZPA attribute/value for both user tables"
+  ],
+  "lab-04.html": [
+    "P2: correlate default, allow, and block tests with firewall rule hits; qualify inconclusive symptoms"
+  ],
+  "lab-05.html": [
+    "P2: correlate TLS policy with inspected certificate and log action; pinning interpretation remains conditional"
+  ],
+  "lab-06.html": [
+    "P2: correct default Cloud App Control allow/URL filtering and cascading precedence, with configuration check"
+  ],
+  "lab-07.html": [
+    "P0: primary gambling nslookup uses system resolver without 8.8.8.8",
+    "P0: log rule/domain/action correlation and inconclusive timeout caveat"
+  ],
+  "lab-08.html": [
+    "P2: DLP Web Insights rule/engine/action proof after upload test"
+  ],
+  "lab-09.html": [
+    "P1: OAuth token output example, two-hour expiry, serial console fallback and lab-only cat /etc/issue",
+    "P1: explicit warning before destructive reset commands"
+  ],
+  "lab-10.html": [
+    "P0: explicitly set TCP 80 in Intranet app segment settings; warning before expected result"
+  ],
+  "lab-11.html": [
+    "P2: Lab 11 complete text reflects two independent authorizations"
+  ],
+  "lab-12.html": [
+    "P1: verify fixed SIPA egress against known App Connector network NAT public IP, not just differing ZIA egress"
+  ],
+  "lab-13.html": [
+    "P0: remove incorrect missing-port Access Policy Blocks diagnostic exercise and screenshot; explain ZCC client-level drop",
+    "P0: align optional lab RDP title/summary with internal application"
+  ],
+  "lab-14.html": [
+    "P1: SDC credentials exclusively via CloudShare \u2192 Credentials; remove stale email reference and misleading student screenshot caption"
+  ],
+  "index.html": [
+    "P1: instructor shares CloudShare URL at session start; Credentials panel, no email"
+  ]
+}

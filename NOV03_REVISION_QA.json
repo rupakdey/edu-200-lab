@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-03",
+  "baseline": "EDU-200-Rev3-P0-P1-P2-Complete.zip",
+  "html_pages": 19,
+  "lab_pages": 16,
+  "task_ids": 47,
+  "missing_local_links_or_assets": 0,
+  "duplicate_html_ids": 0,
+  "new_screenshot_verified": true,
+  "lab_13_steps": 4,
+  "lab_13_178_in_step_2": true,
+  "lab_13_netstat_in_step_3": true,
+  "lab_13_180_in_step_4": true,
+  "lab_13_182_removed_from_html": true,
+  "lab_13_technical_note_outside_steps": true,
+  "lab_04_whatsapp_statement_rewritten": true,
+  "browser_render_checked": false,
+  "live_tenant_tested": false
+}

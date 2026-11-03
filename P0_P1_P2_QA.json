@@ -1,0 +1,28 @@
+{
+  "html_pages": 19,
+  "tasks_per_lab": {
+    "1": 3,
+    "2": 4,
+    "3": 2,
+    "4": 3,
+    "5": 3,
+    "6": 4,
+    "7": 3,
+    "8": 1,
+    "9": 2,
+    "10": 3,
+    "11": 2,
+    "12": 3,
+    "13": 1,
+    "14": 4,
+    "15": 5,
+    "16": 4
+  },
+  "task_total": 47,
+  "local_link_errors": [],
+  "local_link_errors_count": 0,
+  "duplicate_ids": [],
+  "list_structure_errors": [],
+  "errors": [],
+  "status": "PASS"
+}
