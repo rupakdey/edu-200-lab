@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="EDU-200 Lab 12: Traffic Forwarding through SIPA" name="description"/><title>Lab 12 | Traffic Forwarding through SIPA | EDU-200 Rev 3.0</title><link href="assets/css/style.css" rel="stylesheet"/><script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script><link href="assets/images/shared/favicon.svg" rel="icon" type="image/svg+xml"/></head>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="EDU-200 Lab 12: Traffic Forwarding through SIPA" name="description"/><title>Lab 12 | Traffic Forwarding through SIPA | EDU-200 Rev 3.0</title><link href="assets/css/style.css" rel="stylesheet"/><script>try{const t=localStorage.getItem('edu200-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script><link href="assets/images/shared/favicon.svg" rel="icon" type="image/svg+xml"/><link rel="stylesheet" href="assets/css/sipa-comparison.css"/>
+</head>
 <body data-course-id="EDU-200" data-page="lab-12" data-storage-prefix="edu200"><a class="skip-link" href="#main">Skip to content</a><div id="course-nav"></div><header class="topbar">
 <div class="topbar-left"><button aria-label="Open course navigation" class="icon-btn mobile-menu" data-menu-toggle="">☰</button><div class="breadcrumb"><a href="index.html">EDU-200</a> / <strong>Lab 12</strong> / Traffic Forwarding through SIPA</div></div>
 <div class="topbar-actions"><div class="global-search"><input aria-label="Search course" id="global-search-input" placeholder="Search labs or tasks…" type="search"/><div class="global-search-results" id="global-search-results"></div></div><button aria-label="Toggle dark or light mode" class="icon-btn" data-theme-toggle=""><span data-theme-icon="">☾</span></button></div>
@@ -157,6 +158,48 @@
 </article>
 </section>
 <div class="callout success"><div class="callout-symbol">✓</div><div><div class="callout-title">Lab 12 complete</div><p>Selected public app egresses through a fixed SIPA path</p></div></div>
+<section class="section sipa-review" id="sipa-vs-direct-zpa" aria-labelledby="sipa-comparison-title">
+  <header class="sipa-review-heading">
+    <div class="eyebrow">After the lab</div>
+    <h2 id="sipa-comparison-title">Why use SIPA when direct ZPA can present the same IP?</h2>
+    <p>Both paths can present the corporate NAT’s public IP to a SaaS or web app. SIPA also puts the request through ZIA security policy before it reaches that egress.</p>
+  </header>
+
+  <div class="sipa-review-table-wrap" role="region" aria-label="Compare policy and egress by path" tabindex="0">
+    <table class="sipa-review-table">
+      <caption>Policy and egress by path</caption>
+      <thead><tr><th scope="col">Traffic path</th><th scope="col">Policy and forwarding</th><th scope="col">Source IP seen by the app</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><span class="sipa-path-name sipa-path-anchor">ZIA with SIPA</span></th><td>ZIA applies its configured security policies. Forwarding Control steers the request to the Private Access gateway for delivery through an App Connector.</td><td>Public IP of the corporate NAT used by the connector.</td></tr>
+        <tr><th scope="row"><span class="sipa-path-name sipa-path-direct">Direct ZPA</span></th><td>Client Connector steers a matching destination to ZPA. ZPA authorizes access and an App Connector connects to the app.</td><td>The same public IP if the connector uses the same NAT.</td></tr>
+        <tr><th scope="row"><span class="sipa-path-name sipa-path-baseline">Regular ZIA</span></th><td>ZIA applies its configured security policies and uses standard internet forwarding.</td><td>Zscaler’s public egress IP in the lab baseline.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="sipa-review-figure">
+    <button type="button" aria-label="Enlarge SIPA and direct ZPA topology" data-lightbox="" data-caption="SIPA and direct ZPA can share a corporate NAT and present the same source IP.">
+      <img src="assets/images/shared/zscaler-sipa-vs-direct-zpa.svg" width="1320" height="628" loading="lazy" alt="Client Connector sends the SIPA flow through ZIA policy and the Private Access gateway. The direct flow goes to ZPA application access policy. In this example both flows use the same App Connector, corporate NAT and public app."/>
+    </button>
+    <figcaption><span>Both paths use the same connector and NAT in this example. The public IP is illustrative.</span><span class="sipa-enlarge">Select to enlarge ↗</span></figcaption>
+  </figure>
+
+  <div class="sipa-review-notes">
+    <article class="sipa-review-note">
+      <h3>What SIPA adds</h3>
+      <p>SIPA combines the app’s source IP allowlist with ZIA controls such as URL filtering, threat protection and data protection. The configured policies determine which controls apply. Inspecting encrypted content depends on the applicable SSL/TLS inspection policy.</p>
+    </article>
+    <article class="sipa-review-note">
+      <h3>What direct ZPA needs</h3>
+      <p>Define the destination as a ZPA application, authorize the user, and ensure the App Connector can resolve and reach the app. The app sees the connector path’s public NAT address when that path uses source NAT.</p>
+    </article>
+  </div>
+  <aside class="sipa-review-check">
+    <h3>How to confirm the SIPA path</h3>
+    <p>The source IP confirms which egress the app saw. To distinguish SIPA from direct ZPA when they share that IP, check the active ZIA Forwarding Control rule and correlate a matching ZIA transaction when logging is enabled.</p>
+  </aside>
+  <p class="sipa-review-links"><a href="https://www.zscaler.com/innovations/source-ip-anchoring" target="_blank" rel="noopener noreferrer">Source IP Anchoring</a><a href="https://help.zscaler.com/zia/about-forwarding-policies" target="_blank" rel="noopener noreferrer">ZIA Forwarding Control</a><a href="https://help.zscaler.com/zpa/configuring-defined-application-segments" target="_blank" rel="noopener noreferrer">ZPA Application Segments</a></p>
+</section>
 <div class="page-nav"><a href="lab-11.html"><small>Previous</small><strong>← Lab 11</strong></a><a class="next" href="lab-13.html"><small>Next</small><strong>Lab 13 →</strong></a></div>
 <footer class="footer guide-footer"><span class="footer-author">Author: <strong>Rupak Dey</strong></span><span class="footer-course">Adapted EDU-200 Lab Guide · Rev 3.0</span></footer>
 </div></main><a aria-label="Back to top" class="floating-logo" href="#main"><img alt="Zscaler" src="assets/images/shared/zscaler-logo.svg"/></a><dialog class="modal" id="image-modal"><img alt="Expanded lab screenshot"/><div class="modal-bar"><span data-modal-caption=""></span><button class="modal-close" data-modal-close="">Close</button></div></dialog><script defer="" src="assets/js/course-data.js"></script><script defer="" src="assets/js/site.js"></script></body></html>
