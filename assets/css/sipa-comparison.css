@@ -1,0 +1,80 @@
+/* Lab 12 post-lab comparison */
+.sipa-review {
+  display: grid;
+  gap: 20px;
+  max-width: 76rem;
+  margin-inline: auto;
+}
+.sipa-review-heading h2 { margin: 6px 0 10px; line-height: 1.15; text-wrap: balance; }
+.sipa-review-heading p { max-width: 70ch; margin: 0; color: var(--muted); }
+.sipa-review-table-wrap {
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-solid);
+}
+.sipa-review-table { width: 100%; min-width: 610px; border-collapse: collapse; font-size: .94rem; }
+.sipa-review-table caption {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 750;
+}
+.sipa-review-table th, .sipa-review-table td {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+.sipa-review-table thead th { background: var(--surface-2); font-size: .85rem; }
+.sipa-review-table th:first-child { width: 23%; }
+.sipa-review-table th:last-child { width: 29%; }
+.sipa-path-name {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 7px;
+  background: var(--surface-2);
+  white-space: nowrap;
+  font-size: .85rem;
+}
+.sipa-path-anchor { background: var(--accent-soft); color: var(--accent-2); }
+.sipa-path-direct { background: var(--success-soft); color: var(--success); }
+.sipa-review-figure {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-solid);
+}
+.sipa-review-figure button { display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in; }
+.sipa-review-figure img { display: block; width: 100%; height: auto; }
+.sipa-review-figure figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 20px;
+  padding: 12px 18px;
+  color: var(--muted);
+  font-size: .85rem;
+}
+.sipa-enlarge { color: var(--accent-2); font-weight: 700; }
+.sipa-review-notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.sipa-review-note, .sipa-review-check {
+  padding: 17px 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-solid);
+}
+.sipa-review-check { background: var(--accent-soft); border-inline-start: 4px solid var(--accent); }
+.sipa-review-note h3, .sipa-review-check h3 { margin: 0 0 6px; font-size: 1rem; }
+.sipa-review-note p, .sipa-review-check p { margin: 0; font-size: .93rem; }
+.sipa-review-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0; font-size: .85rem; }
+.sipa-review-figure button:focus-visible, .sipa-review-table-wrap:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -4px;
+}
+@media (max-width: 700px) {
+  .sipa-review { gap: 16px; }
+  .sipa-review-notes { grid-template-columns: 1fr; }
+  .sipa-review-table th, .sipa-review-table td { padding-inline: 12px; }
+}
