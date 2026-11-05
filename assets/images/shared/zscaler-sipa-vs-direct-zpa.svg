@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 628" width="1320" height="628" role="img" aria-labelledby="title desc">
+<title id="title">Two policy paths to one public egress</title>
+<desc id="desc">The SIPA path runs through ZIA security policy and Forwarding Control to the ZPA service. Direct ZPA runs through ZPA application access policy. Both can reach the same public web app through the same App Connector and source NAT.</desc>
+<rect width="1320" height="628" fill="#0b1626"/>
+<g font-family="DejaVu Sans, Arial, sans-serif">
+<text x="40" y="42" fill="#87b6ff" font-size="15" font-weight="700">EDU-200   /   LAB 12   /   POST-LAB TOPOLOGY</text>
+<text x="40" y="86" fill="#f1f6ff" font-size="35" font-weight="700">Two policy paths to one public egress</text>
+<text x="40" y="117" fill="#b6c8df" font-size="18" font-weight="400">The app can see the same public IP whichever policy path the request takes.</text>
+<rect x="40" y="149" width="1240" height="270" rx="16" fill="#101f32" stroke="#2c435d"/>
+<text x="64" y="178" fill="#b6c8df" font-size="14" font-weight="700">CLIENT STEERING</text>
+<text x="319" y="178" fill="#b6c8df" font-size="14" font-weight="700">POLICY AND DELIVERY</text>
+<rect x="64" y="251" width="199" height="76" rx="12" fill="#172b43" stroke="#3a536e"/>
+<text x="81" y="281" fill="#f1f6ff" font-size="21" font-weight="700">User device</text>
+<text x="81" y="306" fill="#b6c8df" font-size="15" font-weight="400">Client Connector</text>
+<text x="319" y="208" fill="#87b6ff" font-size="15" font-weight="700">01  ZIA WITH SIPA</text>
+<rect x="319" y="220" width="273" height="76" rx="12" fill="#172b43" stroke="#3a536e"/>
+<text x="336" y="250" fill="#87b6ff" font-size="21" font-weight="700">ZIA</text>
+<text x="336" y="275" fill="#b6c8df" font-size="15" font-weight="400">Security + Forwarding Control</text>
+<rect x="662" y="220" width="260" height="76" rx="12" fill="#172b43" stroke="#3a536e"/>
+<text x="679" y="250" fill="#87b6ff" font-size="21" font-weight="700">ZPA service</text>
+<text x="679" y="275" fill="#b6c8df" font-size="15" font-weight="400">Via Private Access gateway</text>
+<text x="319" y="332" fill="#6fdfbf" font-size="15" font-weight="700">02  DIRECT ZPA</text>
+<rect x="319" y="343" width="603" height="76" rx="12" fill="#172b43" stroke="#3a536e"/>
+<text x="336" y="373" fill="#6fdfbf" font-size="21" font-weight="700">ZPA service</text>
+<text x="336" y="398" fill="#b6c8df" font-size="15" font-weight="400">Application match + access policy</text>
+<path d="M263 289 H289 V258 H309" fill="none" stroke="#87b6ff" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M306 253 L315 258 L306 263 Z" fill="#87b6ff"/>
+<path d="M289 289 V381 H309" fill="none" stroke="#6fdfbf" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M306 376 L315 381 L306 386 Z" fill="#6fdfbf"/>
+<path d="M592 258 H652" fill="none" stroke="#87b6ff" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M649 253 L658 258 L649 263 Z" fill="#87b6ff"/>
+<path d="M922 258 H996 V465 H243 V488" fill="none" stroke="#87b6ff" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M922 381 H966 V448 H218 V488" fill="none" stroke="#6fdfbf" stroke-width="2.5" stroke-linejoin="round"/>
+<text x="1035" y="265" fill="#87b6ff" font-size="16" font-weight="700">ZIA policy applied</text>
+<text x="1035" y="387" fill="#6fdfbf" font-size="16" font-weight="700">ZPA access policy</text>
+<rect x="40" y="488" width="1240" height="116" rx="16" fill="#12243a" stroke="#3a536e"/>
+<rect x="64" y="508" width="319" height="76" rx="12" fill="#172b43" stroke="#3a536e"/>
+<text x="81" y="538" fill="#f1f6ff" font-size="21" font-weight="700">App Connector</text>
+<text x="81" y="563" fill="#b6c8df" font-size="15" font-weight="400">Connects to the destination</text>
+<rect x="500" y="508" width="319" height="76" rx="12" fill="#172b43" stroke="#3a536e"/>
+<text x="517" y="538" fill="#f1f6ff" font-size="21" font-weight="700">Corporate source NAT</text>
+<text x="517" y="563" fill="#b6c8df" font-size="15" font-weight="400">Public egress 203.0.113.40</text>
+<rect x="935" y="508" width="319" height="76" rx="12" fill="#172b43" stroke="#3a536e"/>
+<text x="952" y="538" fill="#f1f6ff" font-size="21" font-weight="700">Public SaaS / web app</text>
+<text x="952" y="563" fill="#b6c8df" font-size="15" font-weight="400">Sees 203.0.113.40</text>
+<path d="M383 546 H490" fill="none" stroke="#b6c8df" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M487 541 L496 546 L487 551 Z" fill="#b6c8df"/>
+<path d="M819 546 H925" fill="none" stroke="#b6c8df" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M922 541 L931 546 L922 551 Z" fill="#b6c8df"/>
+<path d="M238 496 L243 505 L248 496 Z" fill="#87b6ff"/>
+<path d="M213 496 L218 505 L223 496 Z" fill="#6fdfbf"/>
+<path d="M243 488 V497" fill="none" stroke="#87b6ff" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M218 488 V497" fill="none" stroke="#6fdfbf" stroke-width="2.5" stroke-linejoin="round"/>
+</g></svg>
